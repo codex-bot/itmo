@@ -1,0 +1,3 @@
+[submodule "itmoapp/sdk"]
+	path = itmoapp/sdk
+	url = git@github.com:codex-bot/sdk-python

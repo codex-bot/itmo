@@ -1,0 +1,35 @@
+##
+# Main URL for services callbacks
+# Should use https protocol
+##
+URL = ''
+
+# Unique application name in lowercase
+APPLICATION_NAME = 'ifmo-app'
+
+# HTTP server settings
+SERVER = {
+    'host': '127.0.0.1',
+    'port': 1330
+}
+
+# RabbitMQ server settings
+RABBITMQ = {
+    'host': '127.0.0.1',
+}
+
+# MongoDB
+DB = {
+    'name': 'cdx-github',
+    'host': '127.0.0.1',
+    'port': 27017
+}
+
+# Token got from App Manager
+APPLICATION_TOKEN = 'ifmo-app'
+
+"""
+We will store user-to-chat linking in this collection
+_id | chat | user | dt_register
+"""
+USERS_COLLECTION_NAME = 'ifmo_USERS_COLLECTION_NAME'
