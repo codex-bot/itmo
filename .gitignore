@@ -1,0 +1,7 @@
+*.pyc
+.idea
+venv
+**/config.py
+globalcfg.py
+codexbot/.DS_Store
+.DS_Store
