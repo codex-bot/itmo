@@ -1,23 +1,31 @@
 from sdk.codexbot_sdk import CodexBot
-from config import APPLICATION_TOKEN, APPLICATION_NAME, DB, URL, SERVER
-from commands.requests import CommandRequests
-from commands.start import CommandStart
-from commands.login import CommandLogin
+from config import *
+from commands import *
+from states import Controller as StateController
 
-class Ifmo:
+
+class Itmo:
 
     def __init__(self):
-        self.sdk = CodexBot(APPLICATION_NAME, SERVER['host'], SERVER['port'], db_config=DB, token=APPLICATION_TOKEN)
+        self.sdk = CodexBot(APPLICATION_NAME, SERVER['host'], SERVER['port'], db_config=DB, token=APPLICATION_TOKEN, hawk_token=HAWK_TOKEN)
 
-        self.sdk.log("Ifmo module initialized")
+        self.sdk.log("Itmo module initialized")
+
+        self.state_controller = StateController(self.sdk, STATES_COLLECTION_NAME)
 
         self.sdk.register_commands([
-            ('ifmo_requests', 'requests', CommandRequests(self.sdk)),
-            ('ifmo_start', 'start', CommandStart(self.sdk)),
-            ('ifmo_login', 'login', CommandLogin(self.sdk))
+            ('itmo', 'start', CommandStart(self.sdk, self.state_controller))
         ])
+
+        self.sdk.set_user_answer_handler(self.process_user_reply)
 
         self.sdk.start_server()
 
+    async def process_user_reply(self, payload):
+        self.sdk.log("User reply handler fired with payload {}".format(payload))
+
+        await self.state_controller.process(payload)
+
+
 if __name__ == "__main__":
-    ifmo = Ifmo()
+    itmo = Itmo()
