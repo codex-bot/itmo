@@ -13,39 +13,47 @@ class StateCalc(Base):
 
         message = "- никуда"
 
-        await self.sdk.send_text_to_chat(
+        keyboard = [
+            [
+                {
+                    'text': 1,
+                    'callback_data': '1'
+                },
+                {
+                    'text': 2,
+                    'callback_data': '2'
+                },
+                {
+                    'text': 3,
+                    'callback_data': '3'
+                },
+                {
+                    'text': 4,
+                    'callback_data': '4'
+                },
+                {
+                    'text': 5,
+                    'callback_data': '5'
+                },
+                {
+                    'text': '>',
+                    'callback_data': '>'
+                },
+            ],
+        ]
+
+        await self.sdk.send_inline_keyboard_to_chat(
             payload["chat"],
-            message
+            message,
+            keyboard
         )
 
-        return await self.controller.goto(payload, 'start')
+        # await self.sdk.send_text_to_chat(
+        #     payload["chat"],
+        #     message
+        # )
+        #
+        # return await self.controller.goto(payload, 'start')
 
     async def process(self, payload, data):
         pass
-        # self.sdk.log("State Menu processor fired with payload {}".format(payload))
-        #
-        # text = payload['text']
-        #
-        # # TODO parse user's scores
-        #
-        #
-        #
-        # # if text in self.response_phrases['ratings']:
-        # #     pass
-        # # elif text in self.response_phrases['EGE_calc']:
-        # #     pass
-        # # elif text in self.response_phrases['notifications']:
-        # #     pass
-        # # elif text in self.response_phrases['logout']:
-        # #     pass
-        # # else:
-        # #     self.sdk.log("PHRASE IS UNDEFINED")
-        #
-        # # message = 'спасибо. пока'
-        # #
-        # # await self.sdk.send_text_to_chat(
-        # #     payload["chat"],
-        # #     message
-        # # )
-        #
-        # return await self.controller.goto(payload, 'start')

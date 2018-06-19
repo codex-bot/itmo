@@ -40,7 +40,9 @@ class StateAuth(Base):
         # )
 
         data = {
-            'user_name': 'Андрей Федотов'
+            'id': 123456789,
+            'name': 'Андрей Федотов',
+
         }
 
         return await self.controller.goto(payload, 'ask_auth_correctness', data)

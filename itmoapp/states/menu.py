@@ -57,22 +57,29 @@ class StateMenu(Base):
 
         # TODO process menu
 
-        # if text in self.response_phrases['ratings']:
-        #     pass
-        # elif text in self.response_phrases['EGE_calc']:
-        #     pass
-        # elif text in self.response_phrases['notifications']:
-        #     pass
-        # elif text in self.response_phrases['logout']:
-        #     pass
-        # else:
-        #     self.sdk.log("PHRASE IS UNDEFINED")
+        if text in self.response_phrases['ratings']:
+            pass
+        elif text in self.response_phrases['EGE_calc']:
+            pass
+        elif text in self.response_phrases['notifications']:
+            pass
+        elif text in self.response_phrases['logout']:
+            # todo remove user from db
 
-        message = 'Я пока не умею обрабатывать ответы на меню, поэтому отправлю тебя в состояние start'
+            message = 'Если понадоблюсь, выполни команду /start.'
+
+            await self.sdk.send_text_to_chat(
+                payload["chat"],
+                message
+            )
+
+            return await self.controller.goto(payload, 'start')
+
+        message = 'Не понимаю'
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
             message
         )
 
-        return await self.controller.goto(payload, 'start')
+        return await self.controller.goto(payload, 'menu')

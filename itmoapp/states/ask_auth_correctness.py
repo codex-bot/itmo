@@ -1,4 +1,5 @@
 from .base import Base
+from itmoapp.models import Student
 
 
 class StateAskAuthCorrectness(Base):
@@ -17,7 +18,7 @@ class StateAskAuthCorrectness(Base):
         }
 
     async def before(self, payload, data):
-        user_name = data['user_name'] if 'user_name' in data else None
+        user_name = data['name'] if 'name' in data else None
 
         # User name is missing
         if user_name is None:
@@ -35,9 +36,7 @@ class StateAskAuthCorrectness(Base):
 
         buttons = [
             [
-                {'text': self.response_phrases['yes'][0]}
-            ],
-            [
+                {'text': self.response_phrases['yes'][0]},
                 {'text': self.response_phrases['no'][0]}
             ]
         ]
@@ -59,12 +58,17 @@ class StateAskAuthCorrectness(Base):
         # If user answer "yes, it's me"
         if text in self.response_phrases['yes']:
             # TODO save user to db
+            Student(self.sdk, data={
+                'chat': payload['chat'],
+                'id': data['id'],
+
+            })
 
             # Go to menu
             return await self.controller.goto(payload, 'menu')
 
         # If user answer "no"
-        message = 'Тогда попробуйте авторизоваться еще раз.'
+        message = 'Попробуйте авторизоваться еще раз.'
 
         await self.sdk.send_text_to_chat(
             payload["chat"],

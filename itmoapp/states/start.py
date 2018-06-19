@@ -1,11 +1,14 @@
 from .base import Base
+from itmoapp.models import Student
 
 
 class StateStart(Base):
 
     async def process(self, payload, data):
-        # if user is autorized: TODO check if user is authorized
-        #     return await self.controller.goto(payload, 'menu')
+        student = Student(self.sdk, chat=payload['chat'])
+
+        if student.get('name') is not None:
+             return await self.controller.goto(payload, 'menu')
 
         # User is not autorized
         message = "Привет. Я буду держать тебя в курсе твоего состояния поступления в ИТМО."
