@@ -1,25 +1,37 @@
 from .base import Base
 
 
-class StateGreeting(Base):
+class StateAskAuthCorrectness(Base):
 
     def __init__(self, state_controller):
         super().__init__(state_controller)
 
         self.response_phrases = {
             'yes': [
-                'Да, у меня уже есть номер',
                 'Да'
             ],
 
             'no': [
-                'Нет, пока еще выбираю направление',
                 'Нет'
             ],
         }
 
     async def before(self, payload, data):
-        message = "Ты уже подал заявление?"
+        user_name = data['user_name'] if 'user_name' in data else None
+
+        # User name is missing
+        if user_name is None:
+            # message = 'Не могу найти твое имя в анкете'
+            #
+            # await self.sdk.send_text_to_chat(
+            #     payload["chat"],
+            #     message
+            # )
+
+            # Go back to auth state
+            return await self.controller.goto(payload, 'auth')
+
+        message = "Тебя зовут {}?".format(user_name)
 
         buttons = [
             [
@@ -39,31 +51,24 @@ class StateGreeting(Base):
         await self.sdk.send_keyboard_to_chat(payload['chat'], message, keyboard)
 
     async def process(self, payload, data):
-        self.sdk.log("State Greeting processor fired with payload {}".format(payload))
+        self.sdk.log("State AskAuthCorrectness processor fired with payload {}".format(payload))
         # TODO remove keyboard
 
         text = payload['text']
 
+        # If user answer "yes, it's me"
         if text in self.response_phrases['yes']:
-            # Go to auth
-            return await self.controller.goto(payload, 'auth')
+            # TODO save user to db
 
-        elif text in self.response_phrases['no']:
-            message = 'Я могу помочь подобрать направления по твоим результатам ЕГЭ.'
+            # Go to menu
+            return await self.controller.goto(payload, 'menu')
 
-            await self.sdk.send_text_to_chat(
-                payload["chat"],
-                message
-            )
-
-            # Go to ege_calc
-            return await self.controller.goto(payload, 'ask_scores')
-
-        message = 'Не понимаю'
+        # If user answer "no"
+        message = 'Тогда попробуйте авторизоваться еще раз.'
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
             message
         )
 
-        return await self.controller.goto(payload, 'greeting')
+        return await self.controller.goto(payload, 'auth')

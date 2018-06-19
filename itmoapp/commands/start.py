@@ -9,5 +9,5 @@ class CommandStart(CommandBase):
         # Go to state START
         await self.state.goto(payload, 'start')
 
-        # Run process function for current state
+        # Run process function for current state (start)
         await self.state.process(payload)
