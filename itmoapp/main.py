@@ -1,3 +1,5 @@
+import re
+
 from sdk.codexbot_sdk import CodexBot
 from config import *
 from commands import *
@@ -35,11 +37,19 @@ class Itmo:
     async def process_user_answer(self, payload):
         self.sdk.log("User reply handler fired with payload {}".format(payload))
 
+        # We have no command in user's message
+        command_in_text = None
+
+        # Try to find command in text message
+        try:
+            command_in_text = re.match(r"/([\w]+)", payload.get('text'))[0]
+        except Exception as e:
+            pass
+
         # Force run command if it was passed
-        # todo check for a command in message
-        if payload.get('command') or payload.get('text', '')[0] == '/':
+        if payload.get('command') or command_in_text:
             # Get a command without slash from payload
-            payload['command'] = payload.get('command', payload.get('text')[1:])
+            payload['command'] = payload.get('command', command_in_text)
 
             # Try to process command
             try:
