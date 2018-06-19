@@ -160,6 +160,8 @@ Array of program's data contains elements with fields:
 }
 ```
 
-<!-- ### getProgramsByScores
+### getProgramsByScores
 
-Return list of programs for target scores. Programs should be ordered according to the complexity of entering from the lowest to the highest. -->
+Return list of programs for target scores. Programs should be ordered according to the complexity of entering from the lowest to the highest.
+
+> More info will be added soon
