@@ -1,15 +1,16 @@
 # @itmoabitbot API
 
-This documentation describes programming interface (basic rules and available methods) for Abit Itmo Server.
+This documentation describes programming interface (basic rules and available methods) for Abit Server.
 
 ## Basic rules
 
-All responses JSON-format and should contain the following fields:
+All responses should be in JSON-format and contain the following fields:
 
 | Field     | Type    | Description     |
 |-----------|---------|-----------------|
 | `success` | boolean | response result |
 | `data`    | object  | response data   |
+
 
 ```json
 {
@@ -19,9 +20,10 @@ All responses JSON-format and should contain the following fields:
   }
 }
 ```
+
 ### On errors
 
-If error was occured `success` field should be equal `false`. Error message should be passed in `message` field in `data` object. Check out an example below.
+If error was occured `success` field should be equal `false`. Error message should be passed by `message` field at `data` object. Check out an example below.
 
 ```json
 {
@@ -38,7 +40,7 @@ Bot can send requests with specific header to be authorized.
 
 ## Methods
 
-List of available methods with descriptions, described params and examples.
+List of available methods with descriptions, params and examples.
 
 - [getUser](#getUser)
 - [getUserPositions](#getUserPositions)
@@ -46,7 +48,7 @@ List of available methods with descriptions, described params and examples.
 
 ### getUser
 
-Return User's data by unique identifier.
+Return User's data by identifier.
 
 #### Request
 
@@ -164,4 +166,4 @@ Array of program's data contains elements with fields:
 
 Return list of programs for target scores. Programs should be ordered according to the complexity of entering from the lowest to the highest.
 
-> More info will be added soon
+> More info will be added soon.
