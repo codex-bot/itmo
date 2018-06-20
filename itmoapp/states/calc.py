@@ -4,6 +4,16 @@ from .base import Base
 class StateCalc(Base):
 
     async def before(self, payload, data):
+        pass
+
+        # await self.sdk.send_text_to_chat(
+        #     payload["chat"],
+        #     message
+        # )
+        #
+        # return await self.controller.goto(payload, 'start')
+
+    async def process(self, payload, data):
         message = "Я подобрал несколько направлений, куда у тебя есть возможность поступить"
 
         await self.sdk.send_text_to_chat(
@@ -48,12 +58,4 @@ class StateCalc(Base):
             keyboard
         )
 
-        # await self.sdk.send_text_to_chat(
-        #     payload["chat"],
-        #     message
-        # )
-        #
-        # return await self.controller.goto(payload, 'start')
-
-    async def process(self, payload, data):
-        pass
+        await self.controller.goto(payload, 'start')

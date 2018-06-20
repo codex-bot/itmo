@@ -44,10 +44,13 @@ class StateAskScores(Base):
         # TODO parse user's scores
 
         # TODO if parse was successful
+        if True:
             # save data to DB (?)
 
             # goto calc with this data
-        return await self.controller.goto(payload, 'calc')
+            await self.controller.goto(payload, 'calc')
+            return await self.controller.process(payload)
+
 
 
 

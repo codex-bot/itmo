@@ -1,9 +1,9 @@
-import re
-
 from sdk.codexbot_sdk import CodexBot
 from config import *
 from commands import *
 from states import *
+import re
+
 
 class Itmo:
 
@@ -25,7 +25,8 @@ class Itmo:
         }
 
         self.sdk.register_commands([
-            ('itmo', 'start', CommandStart(self.sdk, self.state_controller))
+            ('itmo_start', 'start', CommandStart(self.sdk, self.state_controller)),
+            ('itmo_help', 'help', CommandHelp(self.sdk, self.state_controller))
         ])
 
         self.sdk.set_user_answer_handler(self.process_user_answer)
@@ -40,11 +41,16 @@ class Itmo:
         # We have no command in user's message
         command_in_text = None
 
-        # Try to find command in text message
         try:
+            # Try to find command in text message
             command_in_text = re.match(r"/([\w]+)", payload.get('text'))[0]
+
+            # Remove first slash
+            command_in_text = command_in_text[1:]
         except Exception as e:
             pass
+
+        print(command_in_text)
 
         # Force run command if it was passed
         if payload.get('command') or command_in_text:

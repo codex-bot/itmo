@@ -12,27 +12,6 @@ class Controller:
         # Dict of available states
         self.states_list = {}
 
-    async def process(self, payload):
-        """
-        Trigger process() command for current state
-
-        :param dict payload:
-        :return:
-        """
-        # Get current state from DB
-        state = await self.get(payload)
-        self.sdk.log("Process state {} for chat {}".format(state['name'], payload['chat']))
-
-        # If state name is missing the return null
-        if state['name'] is None:
-            return
-
-        # Find state class in map
-        state_class = self.get_state_class(state['name'])
-
-        # Call process function for target state
-        await state_class.process(payload, state['data'])
-
     async def get(self, payload):
         """
         Get state from DB for target chat
@@ -125,12 +104,50 @@ class Controller:
                 payload['chat']
             )
 
+    async def process(self, payload):
+        """
+        Trigger process() command for current state
+
+        :param dict payload:
+        :return:
+        """
+        # Get current state from DB
+        state = await self.get(payload)
+        self.sdk.log("Process state {} for chat {}".format(state['name'], payload['chat']))
+
+        # If state name is missing the return null
+        if state['name'] is None:
+            return
+
+        # Find state class in map
+        state_class = self.get_state_class(state['name'])
+
+        # Call process function for target state
+        await state_class.process(payload, state['data'])
+
+    async def reenter(self, payload):
+        """
+        Reenter to current state
+
+        :param payload:
+        :return:
+        """
+        # Get current state from DB
+        current_state = await self.get(payload)
+
+        # Do nothing if current state in none
+        if current_state is None:
+            return
+
+        # Enter to current state again
+        await self.goto(payload, current_state['name'], current_state['data'])
+
     def is_state_exist(self, name):
         """
         Check for a state existing
 
-        :param name:
-        :return:
+        :param string name:
+        :return boolean:
         """
         # Check for a state with target name existing in a states_list dict
         return name in self.states_list
