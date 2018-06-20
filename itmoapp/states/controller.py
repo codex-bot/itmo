@@ -8,6 +8,7 @@ class Controller:
 
     def __init__(self, sdk):
         self.sdk = sdk
+        self.collection = STATES_COLLECTION_NAME
 
         # Dict of available states
         self.states_list = {}
@@ -20,7 +21,7 @@ class Controller:
         :return dict: state from db: _id, chat, name, data, class
         """
         # Get current state from db
-        current_state = self.sdk.db.find_one(STATES_COLLECTION_NAME, {'chat': payload['chat']})
+        current_state = self.sdk.db.find_one(self.collection, {'chat': payload['chat']})
 
         # Return None if state is missing
         if not current_state:
@@ -65,7 +66,7 @@ class Controller:
         # Update state for target chat in db
         self.sdk.db.update(
             # Collection name
-            STATES_COLLECTION_NAME,
+            self.collection,
 
             # Find params
             {'chat': chat_state['chat']},

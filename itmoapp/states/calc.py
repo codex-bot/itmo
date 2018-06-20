@@ -6,13 +6,6 @@ class StateCalc(Base):
     async def before(self, payload, data):
         pass
 
-        # await self.sdk.send_text_to_chat(
-        #     payload["chat"],
-        #     message
-        # )
-        #
-        # return await self.controller.goto(payload, 'start')
-
     async def process(self, payload, data):
         message = "Я подобрал несколько направлений, куда у тебя есть возможность поступить"
 
@@ -26,28 +19,28 @@ class StateCalc(Base):
         keyboard = [
             [
                 {
-                    'text': 1,
-                    'callback_data': '1'
+                    "text": 1,
+                    "callback_data": "1"
                 },
                 {
-                    'text': 2,
-                    'callback_data': '2'
+                    "text": 2,
+                    "callback_data": "2"
                 },
                 {
-                    'text': 3,
-                    'callback_data': '3'
+                    "text": 3,
+                    "callback_data": "3"
                 },
                 {
-                    'text': 4,
-                    'callback_data': '4'
+                    "text": 4,
+                    "callback_data": "4"
                 },
                 {
-                    'text': 5,
-                    'callback_data': '5'
+                    "text": 5,
+                    "callback_data": "5"
                 },
                 {
-                    'text': '>',
-                    'callback_data': '>'
+                    "text": "">"",
+                    "callback_data": ">"
                 },
             ],
         ]
@@ -58,4 +51,4 @@ class StateCalc(Base):
             keyboard
         )
 
-        await self.controller.goto(payload, 'start')
+        await self.controller.goto(payload, "start")

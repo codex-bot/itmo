@@ -50,8 +50,6 @@ class Itmo:
         except Exception as e:
             pass
 
-        print(command_in_text)
-
         # Force run command if it was passed
         if payload.get('command') or command_in_text:
             # Get a command without slash from payload

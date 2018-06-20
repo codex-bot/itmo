@@ -1,26 +1,30 @@
 from .base import Base
+from itmoapp.models import Student
 
 
 class StateMenu(Base):
+    """
+    Show menu with actions for authorized users
+    """
 
     def __init__(self, state_controller):
         super().__init__(state_controller)
 
         self.response_phrases = {
-            'ratings': [
-                'Позиции в рейтингах'
+            "ratings": [
+                "Позиции в рейтингах"
             ],
 
-            'EGE_calc': [
-                'Подобрать направления по баллам'
+            "EGE_calc": [
+                "Подобрать направления по баллам"
             ],
 
-            'notifications': [
-                'Настроить оповещения'
+            "notifications": [
+                "Настроить оповещения"
             ],
 
-            'logout': [
-                'Выйти из системы'
+            "logout": [
+                "Выйти из системы"
             ],
         }
 
@@ -29,57 +33,61 @@ class StateMenu(Base):
 
         buttons = [
             [
-                {'text': self.response_phrases['ratings'][0]}
+                {"text": self.response_phrases["ratings"][0]}
             ],
             [
-                {'text': self.response_phrases['EGE_calc'][0]}
+                {"text": self.response_phrases["EGE_calc"][0]}
             ],
             [
-                {'text': self.response_phrases['notifications'][0]}
+                {"text": self.response_phrases["notifications"][0]}
             ],
             [
-                {'text': self.response_phrases['logout'][0]}
+                {"text": self.response_phrases["logout"][0]}
             ]
         ]
 
         keyboard = {
-            'keyboard': buttons,
-            'resize_keyboard': True,
-            'one_time_keyboard': True
+            "keyboard": buttons,
+            "resize_keyboard": True,
+            "one_time_keyboard": True
         }
 
-        await self.sdk.send_keyboard_to_chat(payload['chat'], message, keyboard)
+        await self.sdk.send_keyboard_to_chat(payload["chat"], message, keyboard)
 
     async def process(self, payload, data):
         self.sdk.log("State Menu processor fired with payload {}".format(payload))
 
-        text = payload['text']
+        text = payload["text"]
 
         # TODO process menu
 
-        if text in self.response_phrases['ratings']:
+        if text in self.response_phrases["ratings"]:
             pass
-        elif text in self.response_phrases['EGE_calc']:
+        elif text in self.response_phrases["EGE_calc"]:
             pass
-        elif text in self.response_phrases['notifications']:
+        elif text in self.response_phrases["notifications"]:
             pass
-        elif text in self.response_phrases['logout']:
-            # todo remove user from db
+        elif text in self.response_phrases["logout"]:
+            # Remove student data from database
+            Student(self.sdk, chat=payload["chat"]).remove()
 
-            message = 'Если понадоблюсь, выполни команду /start.'
+            # Send message
+            message = "Если понадоблюсь, выполни команду /itmo_start."
 
             await self.sdk.send_text_to_chat(
                 payload["chat"],
                 message
             )
 
-            return await self.controller.goto(payload, 'start')
+            # Go to start state
+            return await self.controller.goto(payload, "start")
 
-        message = 'Не понимаю'
+        # Response to undefined user reply
+        message = "Не понимаю"
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
             message
         )
 
-        return await self.controller.goto(payload, 'menu')
+        return await self.controller.goto(payload, "menu")

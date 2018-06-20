@@ -5,10 +5,11 @@ class Student:
 
     def __init__(self, sdk, data=None, chat=None):
         self.sdk = sdk
-        self.chat_id = ''
-        self.id = 0
-        self.name = ''
-        self.scores = []
+        self.chat = None
+        self.id = None
+        self.name = None
+        self.scores = None
+        self.collection = USERS_COLLECTION_NAME
 
         if chat is not None:
             self.get(chat)
@@ -22,17 +23,50 @@ class Student:
         :param string chat:
         :return:
         """
-        result = self.sdk.db.find_one(USERS_COLLECTION_NAME, {'chat': chat})
+        result = self.sdk.db.find_one(self.collection, {'chat': chat})
         self.sdk.log("[DB] get result: {}".format(result))
 
-    async def save(self):
-        pass
+        self.fill_model(result)
 
-    async def fill_model(self, data):
-        self.chat_id = data.get('chat_id', 0)
-        self.id = data.get('id', 0)
-        self.name = data.get('name', '')
-        self.scores = data.get('test_scores', [])
+    def save(self):
+        data_to_save = {
+            'chat': self.chat,
+            'id': self.id,
+            'name': self.name,
+            'scores': self.scores
+        }
+
+        self.sdk.db.update(
+            # Collection name
+            self.collection,
+
+            # Find params
+            {'chat_id': self.chat},
+
+            # Data to be saved
+            data_to_save,
+
+            # Upsert = true
+            True
+        )
+
+    def remove(self):
+        self.sdk.db.remove(
+            # Collection name
+            self.collection,
+
+            # Find params
+            {'chat': self.chat}
+        )
+
+    def fill_model(self, data):
+        if data is None:
+            return
+
+        self.chat = data.get('chat')
+        self.id = data.get('id')
+        self.name = data.get('name')
+        self.scores = data.get('scores')
 
     def get_positions(self):
         """
