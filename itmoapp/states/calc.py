@@ -14,32 +14,33 @@ class StateCalc(Base):
             message
         )
 
+        # todo add list with pages
         message = "- никуда"
 
         keyboard = [
             [
                 {
-                    "text": 1,
+                    "text": "1",
                     "callback_data": "1"
                 },
                 {
-                    "text": 2,
+                    "text": "2",
                     "callback_data": "2"
                 },
                 {
-                    "text": 3,
+                    "text": "3",
                     "callback_data": "3"
                 },
                 {
-                    "text": 4,
+                    "text": "4",
                     "callback_data": "4"
                 },
                 {
-                    "text": 5,
+                    "text": "5",
                     "callback_data": "5"
                 },
                 {
-                    "text": "">"",
+                    "text": ">",
                     "callback_data": ">"
                 },
             ],
@@ -52,3 +53,4 @@ class StateCalc(Base):
         )
 
         await self.controller.goto(payload, "start")
+
