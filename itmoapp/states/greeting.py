@@ -56,7 +56,7 @@ class StateGreeting(Base):
                 message
             )
 
-            # Go to ege_calc
+            # Ask scores
             return await self.controller.goto(payload, 'ask_scores')
 
         message = 'Не понимаю'

@@ -62,11 +62,18 @@ class StateMenu(Base):
         # TODO process menu
 
         if text in self.response_phrases["ratings"]:
+            # todo get user's ratings
             pass
+
         elif text in self.response_phrases["EGE_calc"]:
-            pass
+            # Show best programs for user by scores
+            await self.controller.goto(payload, "calc")
+            return await self.controller.process(payload)
+
         elif text in self.response_phrases["notifications"]:
+            # todo set up notifications
             pass
+
         elif text in self.response_phrases["logout"]:
             # Remove student data from database
             Student(self.sdk, chat=payload["chat"]).remove()
@@ -76,7 +83,8 @@ class StateMenu(Base):
 
             await self.sdk.send_text_to_chat(
                 payload["chat"],
-                message
+                message,
+                remove_keyboard=True
             )
 
             # Go to start state

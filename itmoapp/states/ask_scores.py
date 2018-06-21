@@ -12,7 +12,8 @@ class StateAskScores(Base):
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
-            message
+            message,
+            remove_keyboard=True
         )
 
     async def process(self, payload, data):

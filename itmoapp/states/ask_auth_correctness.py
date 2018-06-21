@@ -68,7 +68,7 @@ class StateAskAuthCorrectness(Base):
             return await self.controller.goto(payload, "menu")
 
         # If user answer "no"
-        message = "Попробуйте авторизоваться еще раз."
+        message = "Попробуй авторизоваться еще раз."
 
         await self.sdk.send_text_to_chat(
             payload["chat"],

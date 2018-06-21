@@ -70,7 +70,7 @@ class Itmo:
     async def process_callback_query(self, payload):
         self.sdk.log("Callback query handler fired with payload {}".format(payload))
 
-        # TODO process callbacks
+        # TODO process callbacks to current state (?)
 
         # await self.state_controller.process(payload)
 
