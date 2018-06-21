@@ -28,10 +28,8 @@ DB = {
 # Token got from App Manager
 APPLICATION_TOKEN = 'ifmo-app'
 
-"""
-We will store user-to-chat linking in this collection
-_id | chat | user | dt_register
-"""
-USERS_COLLECTION_NAME = 'ifmo_USERS_COLLECTION_NAME'
+USERS_COLLECTION_NAME = 'itmo_users'
+STATES_COLLECTION_NAME = 'itmo_states'
+QUERIES_COLLECTION_NAME = 'itmo_queries'
 
 HAWK_TOKEN = ''

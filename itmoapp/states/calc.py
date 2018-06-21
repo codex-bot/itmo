@@ -103,31 +103,33 @@ class StateCalc(Base):
 
             message += program_message
 
+        response_key = 'hehe'
+
         keyboard = [
             [
                 {
-                    "text": "1",
-                    "callback_data": "1"
+                    "text": "<",
+                    "callback_data": response_key+"1"
                 },
                 {
                     "text": "2",
-                    "callback_data": "2"
+                    "callback_data": response_key+"2"
                 },
                 {
                     "text": "3",
-                    "callback_data": "3"
+                    "callback_data": response_key+"3"
                 },
                 {
-                    "text": "4",
-                    "callback_data": "4"
+                    "text": "4XXXXXXX",
+                    "callback_data": response_key+"4"
                 },
                 {
                     "text": "5",
-                    "callback_data": "5"
+                    "callback_data": response_key+"5"
                 },
                 {
                     "text": ">",
-                    "callback_data": ">"
+                    "callback_data": response_key+">"
                 },
             ],
         ]
@@ -137,7 +139,9 @@ class StateCalc(Base):
             message,
             keyboard,
             parse_mode="HTML",
-            disable_web_page_preview=True
+            disable_web_page_preview=True,
+            # update_id=5073,
+            want_response=response_key
         )
 
         await self.controller.goto(payload, "start")

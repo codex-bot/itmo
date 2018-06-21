@@ -1,5 +1,4 @@
 from functools import partial
-from states import Controller
 
 
 class CommandBase:

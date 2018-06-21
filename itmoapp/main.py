@@ -2,6 +2,7 @@ from sdk.codexbot_sdk import CodexBot
 from config import *
 from commands import *
 from states import *
+from queries import *
 import re
 
 
@@ -13,7 +14,7 @@ class Itmo:
         self.sdk.log("Itmo module initialized")
 
         # Set up states
-        self.state_controller = Controller(self.sdk)
+        self.state_controller = State(self.sdk)
         self.state_controller.states_list = {
             'ask_auth_correctness': StateAskAuthCorrectness,
             'ask_scores': StateAskScores,
@@ -23,6 +24,8 @@ class Itmo:
             'menu': StateMenu,
             'start': StateStart
         }
+
+        self.query_controller = Query(self.sdk)
 
         self.sdk.register_commands([
             ('itmo_start', 'start', CommandStart(self.sdk, self.state_controller)),
@@ -70,9 +73,7 @@ class Itmo:
     async def process_callback_query(self, payload):
         self.sdk.log("Callback query handler fired with payload {}".format(payload))
 
-        # TODO process callbacks to current state (?)
-
-        # await self.state_controller.process(payload)
+        await self.query_controller.process(payload)
 
 
 if __name__ == "__main__":

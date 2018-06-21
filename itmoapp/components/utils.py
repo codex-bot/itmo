@@ -1,3 +1,7 @@
+import random
+import string
+
+
 class Utils:
 
     @staticmethod
@@ -24,3 +28,14 @@ class Utils:
             return form1
 
         return form5
+
+    @staticmethod
+    def generate_hash(size=8, chars=string.ascii_uppercase + string.digits):
+        """
+        Generate unique string
+
+        :param size: size in symbols
+        :param chars: letters used
+        :return: string token
+        """
+        return ''.join(random.SystemRandom().choice(chars) for _ in range(size))

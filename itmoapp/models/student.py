@@ -12,20 +12,9 @@ class Student:
         self.collection = USERS_COLLECTION_NAME
 
         if chat is not None:
-            self.get(chat)
+            self.__get(chat)
         elif data is not None:
-            self.fill_model(data)
-
-    def get(self, chat):
-        """
-        Get user data from db
-
-        :param string chat:
-        :return:
-        """
-        result = self.sdk.db.find_one(self.collection, {'chat': chat})
-
-        self.fill_model(result)
+            self.__fill_model(data)
 
     def save(self):
         data_to_save = {
@@ -58,7 +47,18 @@ class Student:
             {'chat': self.chat}
         )
 
-    def fill_model(self, data):
+    def __get(self, chat):
+        """
+        Get user data from db
+
+        :param string chat:
+        :return:
+        """
+        result = self.sdk.db.find_one(self.collection, {'chat': chat})
+
+        self.__fill_model(result)
+
+    def __fill_model(self, data):
         if data is None:
             return
 
@@ -67,5 +67,5 @@ class Student:
         self.name = data.get('name')
         self.scores = data.get('scores')
 
-    def get_positions(self):
-        pass
+    # def get_positions(self):
+    #     pass
