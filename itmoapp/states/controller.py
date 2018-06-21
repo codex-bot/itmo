@@ -1,4 +1,4 @@
-from itmoapp.config import STATES_COLLECTION_NAME
+from config import STATES_COLLECTION_NAME
 
 
 class Controller:
@@ -32,7 +32,7 @@ class Controller:
 
         if state_name is not None:
             # Call state's before function
-            self.get_state_class(state_name).before(payload, data)
+            await self.get_state_class(state_name).before(payload, data)
 
             # Call wait user answer
             await self.sdk.broker.api.wait_user_answer(

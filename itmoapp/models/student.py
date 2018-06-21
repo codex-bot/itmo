@@ -1,4 +1,4 @@
-from itmoapp.config import USERS_COLLECTION_NAME
+from config import USERS_COLLECTION_NAME
 
 
 class Student:

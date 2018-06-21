@@ -1,5 +1,5 @@
 from .base import Base
-from itmoapp.models import Student
+from models import Student
 
 
 class StateMenu(Base):

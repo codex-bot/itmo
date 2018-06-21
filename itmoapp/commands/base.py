@@ -1,5 +1,5 @@
 from functools import partial
-from itmoapp.states import Controller
+from states import Controller
 
 
 class CommandBase:
