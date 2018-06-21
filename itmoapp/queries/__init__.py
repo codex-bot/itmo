@@ -8,15 +8,34 @@ class Query:
         self.sdk = sdk
         # self.collection = QUERIES_COLLECTION_NAME
 
-    async def send_message(self, data):
-        message = Message()
-        pass
+    # async def send_message(self, data):
+    #     message = Message(self.sdk)
+    #     pass
+
+    def create(self, payload):
+
+
+    def save_message(self, payload):
+        message_hash = payload['want_response']
+        message = Message(self.sdk, message_hash)
+        message.id = payload['message_id']
+        message.save()
+        self.sdk.log("Message {} was saved as {}".format(message.id, message.hash))
 
     async def process(self, payload):
         self.sdk.log("Process query with payload {}".format(payload))
 
-        if "want_response" in payload:
-            self.sdk.log("надо бы записать это сообщеньице{}".format(payload['want_response']))
+        # # Response with want_response param
+        # if "want_response" in payload:
+        #     hash = payload['want_response']
+        #     id = payload['message_id']
+        #
+        #     message = Message(self.sdk, hash)
+        #     message.id = id
+        #     message.save()
+
+
+
 
         # todo get query hash and data from payload["data"]
 
@@ -80,7 +99,8 @@ class Message:
         self.__fill_model(result)
 
     def __fill_model(self, data):
-        self.hash = data.get("hash")
-        self.id = data.get("id")
-        self.data = data.get("data")
-        self.query_type = data.get("query_type")
+        if data:
+            self.hash = data.get("hash")
+            self.id = data.get("id")
+            self.data = data.get("data")
+            self.query_type = data.get("query_type")

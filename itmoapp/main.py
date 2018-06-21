@@ -73,6 +73,11 @@ class Itmo:
     async def process_callback_query(self, payload):
         self.sdk.log("Callback query handler fired with payload {}".format(payload))
 
+        # Save message id if identifier was passed in want_response field from core
+        if "want_response" in payload:
+            return self.query_controller.save_message(payload)
+
+        # Process query
         await self.query_controller.process(payload)
 
 
