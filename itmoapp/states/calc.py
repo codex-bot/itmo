@@ -1,4 +1,5 @@
 from .base import Base
+from components import Utils
 
 
 class StateCalc(Base):
@@ -25,23 +26,6 @@ class StateCalc(Base):
         )
 
         # todo add list with pages
-        message = "<a href=\"\">Информатика и программирование</a>\n" \
-                  "\n" \
-                  "\n" \
-                  "\n" \
-                  "\n" \
-                  "\n" \
-                  "\n" \
-                  "\n" \
-                  "\n" \
-                  "\n" \
-                  "\n" \
-                  "\n" \
-                  "\n" \
-                  "\n" \
-                  "\n" \
-                  "\n" \
-                  "\n" \
 
         programs = [
             {
@@ -89,7 +73,7 @@ class StateCalc(Base):
 
             program_requests = "{} {}".format(
                 program['requests'],
-                self.sdk.endings(
+                Utils.endings(
                     int(program['requests']),
                     "заявление",
                     "заявления",
@@ -99,7 +83,7 @@ class StateCalc(Base):
 
             program_value = "{} {}".format(
                 program['value'],
-                self.sdk.endings(
+                Utils.endings(
                     int(program['value']),
                     "место",
                     "места",

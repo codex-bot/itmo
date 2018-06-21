@@ -24,7 +24,6 @@ class Student:
         :return:
         """
         result = self.sdk.db.find_one(self.collection, {'chat': chat})
-        self.sdk.log("[DB] get result: {}".format(result))
 
         self.fill_model(result)
 
@@ -69,8 +68,4 @@ class Student:
         self.scores = data.get('scores')
 
     def get_positions(self):
-        """
-
-        :return:
-        """
         pass
