@@ -26,6 +26,9 @@ class Itmo:
         }
 
         self.query_controller = Query(self.sdk)
+        # self.query_controller.types_list = {
+        #     'pagination': QueryTypePagination
+        # }
 
         self.sdk.register_commands([
             ('itmo_start', 'start', CommandStart(self.sdk, self.state_controller)),
@@ -75,7 +78,7 @@ class Itmo:
 
         # Save message id if identifier was passed in want_response field from core
         if "want_response" in payload:
-            return self.query_controller.save_message(payload)
+            return self.query_controller.save_message_id(payload)
 
         # Process query
         await self.query_controller.process(payload)

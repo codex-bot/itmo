@@ -1,8 +1,14 @@
+from queries import Query
+
+
 class Base:
 
     def __init__(self, state_controller):
         self.sdk = state_controller.sdk
         self.controller = state_controller
+
+        # todo remove this var
+        self.queries = Query(self.sdk)
 
         self.response_phrases = {}
 

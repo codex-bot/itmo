@@ -1,106 +1,66 @@
-from components import Utils
-from config import QUERIES_COLLECTION_NAME
+from queries.types import *
+from .base import Base
+from .message import Message
 
 
 class Query:
 
     def __init__(self, sdk):
         self.sdk = sdk
-        # self.collection = QUERIES_COLLECTION_NAME
 
-    # async def send_message(self, data):
-    #     message = Message(self.sdk)
-    #     pass
+        # todo init it empty
+        self.types_list = {
+            QueryTypePagination.name(): QueryTypePagination
+        }
 
-    def create(self, payload):
+    async def create(self, payload, data, query_type):
+        """
+        Create a new query message by target type
 
+        :param payload:
+        :param data:
+        :param query_type:
+        :return:
+        """
+        type_class = self.__get_type(query_type)
+        await type_class.create(payload, data)
 
-    def save_message(self, payload):
-        message_hash = payload['want_response']
+    def save_message_id(self, payload):
+        """
+        Save message id passed from core
+
+        :param payload:
+        :return:
+        """
+        message_hash = payload["want_response"]
         message = Message(self.sdk, message_hash)
-        message.id = payload['message_id']
+        message.id = payload["message_id"]
         message.save()
         self.sdk.log("Message {} was saved as {}".format(message.id, message.hash))
 
     async def process(self, payload):
         self.sdk.log("Process query with payload {}".format(payload))
 
-        # # Response with want_response param
-        # if "want_response" in payload:
-        #     hash = payload['want_response']
-        #     id = payload['message_id']
-        #
-        #     message = Message(self.sdk, hash)
-        #     message.id = id
-        #     message.save()
+        # Unwrap hash and data
+        # "7IEV0WJC:4" --> {"hash": "7IEV0WJC", "data": "4"}
+        callback_data = Message.unwrap_callback_data(payload["data"])
 
+        # Find message by hash in callback data
+        message = Message(self.sdk, callback_data["hash"])
 
+        type_class = self.__get_type(message.query_type)
+        type_class.message = message
 
+        await type_class.process(payload, callback_data["data"])
 
-        # todo get query hash and data from payload["data"]
+    def __get_type(self, query_type):
+        """
+        Get Type class by name
 
-        # todo find query by hash
+        :param query_type:
+        :return:
+        """
+        if query_type not in self.types_list:
+            raise Exception("Type with name {} does not exist".format(query_type))
 
-        # todo process
-
-        # todo update message
-
-    def __get(self, payload):
-        pass
-
-    def __set(self, payload, data):
-        pass
-
-
-class Message:
-
-    def __init__(self, sdk, hash=None):
-        self.sdk = sdk
-        self.collection = QUERIES_COLLECTION_NAME
-
-        self.hash = hash
-        self.id = None
-        self.data = None
-        self.query_type = None
-
-        if hash:
-            self.__find()
-
-    def create(self, data, query_type):
-        self.hash = Utils.generate_hash()
-        self.data = data
-        self.query_type = query_type
-
-    def save(self):
-        data_to_save = {
-            "hash": self.hash,
-            "id": self.id,
-            "data": self.data,
-            "query_type": self.query_type
-        }
-
-        self.sdk.db.update(
-            # Collection name
-            self.collection,
-
-            # Find params
-            {"hash": self.hash},
-
-            # Data to be saved
-            data_to_save,
-
-            # Upsert = true
-            True
-        )
-
-    def __find(self):
-        result = self.sdk.db.find_one(self.collection, {"hash": self.hash})
-
-        self.__fill_model(result)
-
-    def __fill_model(self, data):
-        if data:
-            self.hash = data.get("hash")
-            self.id = data.get("id")
-            self.data = data.get("data")
-            self.query_type = data.get("query_type")
+        return self.types_list[query_type](self.sdk)
