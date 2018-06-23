@@ -29,10 +29,10 @@ class QueryTypePagination(Base):
         self.sdk.log("Message {} was CREATED as {}".format(self.wrapped_data, self.name()))
 
         # todo create text
-        text = self.__generate_text()
+        text = self.__generate_text(1)
 
         # todo create keyboard
-        keyboard = self.__generate_keyboard(2, 50)
+        keyboard = self.__generate_keyboard(1, 50)
 
         await self.sdk.send_inline_keyboard_to_chat(
             payload["chat"],
@@ -51,31 +51,6 @@ class QueryTypePagination(Base):
         # todo create keyboard
         keyboard = self.__generate_keyboard(int(data), 50)
 
-        # keyboard = [
-        #     [
-        #         {
-        #             "text": int(callback_data["data"]) - 2,
-        #             "callback_data": message.wrap_callback_data(int(callback_data["data"]) - 2)
-        #         },
-        #         {
-        #             "text": int(callback_data["data"]) - 1,
-        #             "callback_data": message.wrap_callback_data(int(callback_data["data"]) - 1)
-        #         },
-        #         {
-        #             "text": int(callback_data["data"]),
-        #             "callback_data": message.wrap_callback_data(int(callback_data["data"]))
-        #         },
-        #         {
-        #             "text": int(callback_data["data"]) + 1,
-        #             "callback_data": message.wrap_callback_data(int(callback_data["data"]) + 1)
-        #         },
-        #         {
-        #             "text": int(callback_data["data"]) + 2,
-        #             "callback_data": message.wrap_callback_data(int(callback_data["data"]) + 2)
-        #         },
-        #     ],
-        # ]
-
         await self.sdk.send_inline_keyboard_to_chat(
             payload["chat"],
             text,
@@ -84,13 +59,6 @@ class QueryTypePagination(Base):
             disable_web_page_preview=True,
             update_id=self.message.id
         )
-
-        # await self.sdk.send_inline_keyboard_to_chat(
-        #     payload["chat"],
-        #     "Давай, пидрила, листай дальше",
-        #     keyboard,
-        #     update_id=message.id,
-        # )
 
     def __wrap_data(self, data):
         """
@@ -115,20 +83,19 @@ class QueryTypePagination(Base):
         :param total:
         :return:
         """
-        # Should be between 4 and 8
-        keys_per_row = 7
+        # Should be between 5 and 8
+        keys_per_row = 5
 
         keyboard_row = []
 
-        # keys_left = min(5, total)
-
-        # No need to add keyboard
+        # For one page we no need to add keyboard
         if total == 1:
             pass
 
-        # No need to add overjump (arrows) buttons
+        # No need to add overjump buttons (with arrow)
+        # If count of pages is not greater that the max number of buttons
         #
-        # For only 3 pages:
+        # For only 3 pages and 5 max buttons
         # [ 1 ] [ 2 ] [ •3• ]
         elif total <= keys_per_row:
             for i in range(1, keys_per_row + 1):
@@ -137,12 +104,28 @@ class QueryTypePagination(Base):
                     "callback_data": self.message.wrap_callback_data(i)
                 })
 
-        # Need to add overjumps
+        # We need to add overjumps
         else:
+            # Find a center button
+            #
+            # For 5 (odd)
+            # [ ] [ ] [X] [ ] [ ]
+            #
+            # For 6 (even)
+            # [ ] [ ] [X] [ ] [ ] [ ]
+            half_of_keys_per_row = keys_per_row // 2 + keys_per_row % 2
+
             # If this page in the start of pages list
             #
-            # [ 1 ] [ 2 ] [ •3• ] [ 4 ] [ 14 » ]
-            if cursor < keys_per_row // 2 + 1 + (keys_per_row % 2):
+            # If current page is not grater than a half of keys per row
+            #
+            # [ 1 ] [ 2 ] [ •3• ] [ 4 ] [ 5 ] [ 16 » ]
+            if cursor <= half_of_keys_per_row:
+                # Get pages from
+                #   1                   start of the list
+                # to
+                #   keys_per_row - 1    max number of buttons minus button with arrow
+                #   + 1                 because range() does not get right side of interval
                 for i in range(1, (keys_per_row - 1) + 1):
                     keyboard_row.append({
                         "text": i if i != cursor else "• {} •".format(i),
@@ -154,13 +137,26 @@ class QueryTypePagination(Base):
                     "callback_data": self.message.wrap_callback_data(total)
                 })
 
+            # Check if his page in the end part of the list
             #
-            elif cursor > total - (keys_per_row // 2) - 1 + (keys_per_row + 1) % 2:
+            # If the page number belongs the last half_of_keys_per_row of the list
+            elif cursor > total - half_of_keys_per_row:
+                # Add first button with arrow for overjumping
+                #
+                # [ « 1 ] ...
                 keyboard_row.append({
                     "text": "« {}".format(1),
                     "callback_data": self.message.wrap_callback_data(1)
                 })
 
+                # Get pages from
+                #   total - keys_per_row + 1    last keys_per_row elements of the list (count from 1)
+                #   + 1                         we have placed for the first button with arrow
+                # to
+                #   total + 1                   because range() does not get right side of interval
+                #
+                # For 47th page of 50 with 6 buttons
+                # [ « 1 ] [ 46 ] [ •47• ] [ 48 ] [ 49 ] [ 50 ]
                 for i in range((total - keys_per_row + 1) + 1, total + 1):
                     keyboard_row.append({
                         "text": i if i != cursor else "• {} •".format(i),
