@@ -67,8 +67,7 @@ class StateMenu(Base):
 
         elif text in self.response_phrases["EGE_calc"]:
             # Show best programs for user by scores
-            await self.controller.goto(payload, "calc")
-            return await self.controller.process(payload)
+            return await self.controller.goto(payload, "calc")
 
         elif text in self.response_phrases["notifications"]:
             # todo set up notifications

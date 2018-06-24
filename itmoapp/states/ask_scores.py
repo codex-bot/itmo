@@ -21,7 +21,7 @@ class StateAskScores(Base):
 
         text = payload["text"]
 
-        # TODO parse user"s scores
+        # TODO parse user's scores
 
         # TODO if parse was successful
         if True:

@@ -48,11 +48,12 @@ class State:
                 payload['chat']
             )
 
-    async def process(self, payload):
+    async def process(self, payload, data=None):
         """
         Trigger process() command for current state
 
         :param dict payload:
+        :param data:
         :return:
         """
         # Get current state from DB
@@ -67,7 +68,7 @@ class State:
         state_class = self.get_state_class(state['name'])
 
         # Call process function for target state
-        await state_class.process(payload, state['data'])
+        await state_class.process(payload, data if data is not None else state['data'])
 
     async def reenter(self, payload):
         """

@@ -13,7 +13,7 @@ class Base:
     def create(self, payload, data):
         pass
 
-    def process(self, payload, data):
+    def process(self, payload, request_data):
         pass
 
     def __wrap_data(self, data):
