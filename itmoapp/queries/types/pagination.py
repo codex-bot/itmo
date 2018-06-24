@@ -175,7 +175,19 @@ class QueryTypePagination(Base):
                     "callback_data": self.message.wrap_callback_data(1)
                 })
 
-                
+                # Getting adjacent buttons without arrows from
+                #   cursor                      current cursor position
+                #   - (keys_per_row - 2) // 2   a half of number of buttons left to add
+                #   + (keys_per_row + 1) % 2    if number of buttons is even then "center" will be one
+                #                               of the first half buttons. then we no need one more step
+                #   ... [ _12_ ] [ _13_ ] [ •14• ] [ ... ] [ ... ] ...
+                #   ... [ _12_ ] [ _13_ ] [ •14• ] [ ... ] [ ... ] [ ... ] ...
+                # to
+                #   cursor                      current cursor position
+                #   (keys_per_row - 2) // 2     add a half of number of buttons left to add
+                #    + 1                        because range() does not get right side of interval
+                #   ... [ ... ] [ ... ] [ •14• ] [ _15_ ] [ _16_ ] ...
+                #   ... [ ... ] [ ... ] [ •13• ] [ _14_ ] [ _15_ ] [ _16_ ] ...
                 for i in range(cursor - ((keys_per_row - 2) // 2) + (keys_per_row + 1) % 2, cursor + ((keys_per_row - 2) // 2) + 1):
                     keyboard_row.append({
                         "text": i if i != cursor else "• {} •".format(i),
