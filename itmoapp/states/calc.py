@@ -62,10 +62,8 @@ class StateCalc(Base):
                 "score": "272",
                 "requests": "165",
                 "value": "52"
-            },
+            }
         ]
-
-        # message = ""
 
         programs_data = []
 

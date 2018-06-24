@@ -7,7 +7,7 @@ class QueryTypePagination(Base):
     def __init__(self, sdk):
         super().__init__(sdk)
 
-        self.limit_per_page = 3
+        self.limit_per_page = 4
 
     @staticmethod
     def name():
@@ -17,22 +17,22 @@ class QueryTypePagination(Base):
         """
         Send a new message
 
+        :param payload:
+        :param data:
         :return:
         """
-        self.sdk.log("payload {}".format(payload))
-        self.sdk.log("data {}".format(data))
-
+        # Prepare Type's data
         self.wrapped_data = self.__wrap_data(data)
+
+        # Create a new Message
         self.message = Message(self.sdk)
         self.message.create(self.wrapped_data, self.name())
 
-        self.sdk.log("Message {} was CREATED as {}".format(self.wrapped_data, self.name()))
+        # Compose text
+        text = self.__generate_text(self.wrapped_data['data'])
 
-        # todo create text
-        text = self.__generate_text(1)
-
-        # todo create keyboard
-        keyboard = self.__generate_keyboard(1, 50)
+        # Create a keyboard
+        keyboard = self.__generate_keyboard(1, self.wrapped_data['total_pages'])
 
         await self.sdk.send_inline_keyboard_to_chat(
             payload["chat"],
@@ -43,13 +43,21 @@ class QueryTypePagination(Base):
             want_response=self.message.hash
         )
 
-    async def process(self, payload, data):
+    async def process(self, payload, requested_page):
+        """
 
-        # todo create text
-        text = self.__generate_text(data)
+        :param payload:
+        :param requested_page: page number
+        :return:
+        """
+        # Parse page number
+        requested_page = int(requested_page)
 
-        # todo create keyboard
-        keyboard = self.__generate_keyboard(int(data), 50)
+        # Get text to send
+        text = self.__generate_text(self.message.data['data'], requested_page)
+
+        # Generate keyboard
+        keyboard = self.__generate_keyboard(requested_page, self.message.data['total_pages'])
 
         await self.sdk.send_inline_keyboard_to_chat(
             payload["chat"],
@@ -62,34 +70,52 @@ class QueryTypePagination(Base):
 
     def __wrap_data(self, data):
         """
-        Return wrapped data
+        Add additional information from this Type and return wrapped data
 
         :param data:
         :return:
         """
         return {
-            'data': data
+            "total_pages": self.__count_chunks(data),
+            "data": data
         }
 
-    def __generate_keyboard(self, cursor, total):
+    def __count_chunks(self, data):
         """
-        Generate keyboard for a current page
+        Count number of chunks (pages)
 
-        [1] [2] [3] [4] [50]
-        [1] [14] [15] [16] [50]
-        [1] [2] [3]
-
-        :param cursor:
-        :param total:
-        :return:
+        :param data:
+        :return number:
         """
-        # Should be between 5 and 8
-        keys_per_row = 5
+        # To get result of divison rounded up we can use div for negative number and multiply it to -1 back
+        return ((-1 * data.__len__()) // self.limit_per_page) * -1
 
+    def __generate_text(self, data, page=1):
+        text = ''
+
+        # Count number of list items to skip
+        skip = (page - 1) * self.limit_per_page
+
+        # Compose message
+        for text_block in data[skip:skip + self.limit_per_page]:
+            text += text_block
+
+        return text
+
+    def __generate_keyboard(self, cursor, total, keys_per_row=5):
+        """
+        Generates a keyboard for a current page
+
+        :param number cursor: number of current page
+        :param number total: total number of pages
+        :param number keys_per_row: number of keys in a row. should be between 5 and 8
+        :return list:
+        """
+        # Prepare array of buttons
         keyboard_row = []
 
         # For one page we no need to add keyboard
-        if total == 1:
+        if total <= 1:
             pass
 
         # No need to add overjump buttons (with arrow)
@@ -97,8 +123,12 @@ class QueryTypePagination(Base):
         #
         # For only 3 pages and 5 max buttons
         # [ 1 ] [ 2 ] [ •3• ]
+        # Get pages from
+        #   1                   start of the list
+        # to
+        #   total + 1           because range() does not get right side of interval
         elif total <= keys_per_row:
-            for i in range(1, keys_per_row + 1):
+            for i in range(1, total + 1):
                 keyboard_row.append({
                     "text": i if i != cursor else "• {} •".format(i),
                     "callback_data": self.message.wrap_callback_data(i)
@@ -166,6 +196,7 @@ class QueryTypePagination(Base):
                         "callback_data": self.message.wrap_callback_data(i)
                     })
 
+            # Okay. Page is not on the sides of pages list
             else:
                 # Add the first button with arrow for overjumping
                 #
@@ -208,10 +239,3 @@ class QueryTypePagination(Base):
         ]
 
         return keyboard
-
-    def __generate_text(self, data):
-        text = ''
-
-        text = 'data on page {}'.format(data)
-
-        return text
