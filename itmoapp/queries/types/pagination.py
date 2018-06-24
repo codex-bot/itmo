@@ -132,6 +132,9 @@ class QueryTypePagination(Base):
                         "callback_data": self.message.wrap_callback_data(i)
                     })
 
+                # Add the last button with arrow for overjumping
+                #
+                # ... [ 50 » ]
                 keyboard_row.append({
                     "text": "{} »".format(total),
                     "callback_data": self.message.wrap_callback_data(total)
@@ -141,7 +144,7 @@ class QueryTypePagination(Base):
             #
             # If the page number belongs the last half_of_keys_per_row of the list
             elif cursor > total - half_of_keys_per_row:
-                # Add first button with arrow for overjumping
+                # Add the first button with arrow for overjumping
                 #
                 # [ « 1 ] ...
                 keyboard_row.append({
@@ -164,35 +167,30 @@ class QueryTypePagination(Base):
                     })
 
             else:
+                # Add the first button with arrow for overjumping
+                #
+                # [ « 1 ] ...
                 keyboard_row.append({
                     "text": "« {}".format(1),
                     "callback_data": self.message.wrap_callback_data(1)
                 })
 
+                
                 for i in range(cursor - ((keys_per_row - 2) // 2) + (keys_per_row + 1) % 2, cursor + ((keys_per_row - 2) // 2) + 1):
                     keyboard_row.append({
                         "text": i if i != cursor else "• {} •".format(i),
                         "callback_data": self.message.wrap_callback_data(i)
                     })
 
+                # Add the last button with arrow for overjumping
+                #
+                # ... [ 50 » ]
                 keyboard_row.append({
                     "text": "{} »".format(total),
                     "callback_data": self.message.wrap_callback_data(total)
                 })
 
-            #
-            # keyboard_row.insert(0, {
-            #     # todo add arrow if it required
-            #     "text": 1,
-            #     "callback_data": self.message.wrap_callback_data(1)
-            # })
-            #
-            # keyboard_row.append({
-            #     # todo add arrow if it required
-            #     "text": total,
-            #     "callback_data": self.message.wrap_callback_data(total)
-            # })
-
+        # Add keyboard_row to keyboard
         keyboard = [
             keyboard_row
         ]
