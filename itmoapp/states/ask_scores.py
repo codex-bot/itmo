@@ -28,8 +28,7 @@ class StateAskScores(Base):
             # save data to DB (?)
 
             # goto calc with this data
-            await self.controller.goto(payload, "calc")
-            return await self.controller.process(payload)
+            return await self.controller.goto(payload, "calc")
 
         # Ask resend scores again
         message = "Не могу разобрать"

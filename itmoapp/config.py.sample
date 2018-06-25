@@ -33,3 +33,5 @@ STATES_COLLECTION_NAME = 'itmo_states'
 QUERIES_COLLECTION_NAME = 'itmo_queries'
 
 HAWK_TOKEN = ''
+
+API_SERVER_URI = 'http://localhost:3000'

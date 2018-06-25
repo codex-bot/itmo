@@ -1,12 +1,10 @@
 from .base import Base
-from components import Utils
+from components import Utils, ApiServer
 
 
 class StateCalc(Base):
 
     async def before(self, payload, data):
-        # todo get user's score from db
-
         message = "Минутку."
 
         await self.sdk.send_text_to_chat(
@@ -15,73 +13,9 @@ class StateCalc(Base):
             remove_keyboard=True
         )
 
-        # todo api request
-
-        programs = [
-            {
-                "name": "Информатика и программирование",
-                "id": "10555",
-                "score": "309",
-                "requests": "391",
-                "value": "121"
-            },
-            {
-                "name": "Прикладная и компьютерная оптика",
-                "id": "10565",
-                "score": "235",
-                "requests": "102",
-                "value": "26"
-            },
-            {
-                "name": "Лазеры для информационно-коммуникационных систем",
-                "id": "10569",
-                "score": "239",
-                "requests": "90",
-                "value": "25"
-            },
-            {
-                "name": "Физика наноструктур",
-                "id": "10566",
-                "score": "257",
-                "requests": "15",
-                "value": "13"
-            },
-            {
-                "name": "Вычислительные системы и сети",
-                "id": "10556",
-                "score": "272",
-                "requests": "165",
-                "value": "52"
-            },
-            {
-                "name": "Программирование и интернет-технологии",
-                "id": "10557",
-                "score": "300",
-                "requests": "400",
-                "value": "90"
-            },
-            {
-                "name": "Системное и прикладное программное обеспечение",
-                "id": "10558",
-                "score": "283",
-                "requests": "89",
-                "value": "80"
-            },
-            {
-                "name": "Компьютерные технологии в дизайне",
-                "id": "10559",
-                "score": "283",
-                "requests": "101",
-                "value": "14"
-            },
-            {
-                "name": "Нейротехнологии и программирование",
-                "id": "10559",
-                "score": "282",
-                "requests": "100",
-                "value": "20"
-            },
-        ]
+        # todo send scores array
+        programs = ApiServer().request('getProgramsByScores', {})
+        self.sdk.log("API Server response for getProgramsByScores: {}".format(programs))
 
         await self.controller.process(payload, programs)
 

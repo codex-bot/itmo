@@ -1,3 +1,4 @@
+from components import ApiServer
 from .base import Base
 
 
@@ -24,27 +25,9 @@ class StateAuth(Base):
             # todo goto auth
 
         # todo api request user
-        response_data = {
-            "name": "Андрей Федотов",
-            "scores": [
-                {
-                    "subject": "Математика",
-                    "score": 89
-                },
-                {
-                    "subject": "Русский язык",
-                    "score": 93
-                },
-                {
-                    "subject": "Информатика",
-                    "score": 100
-                },
-                {
-                    "subject": "Физика",
-                    "score": 67
-                }
-            ]
-        }
+
+        response_data = ApiServer().request('getUser', {"id": user_id})
+        self.sdk.log("API Server response for getUser: {}".format(response_data))
 
         if "name" not in response_data or "scores" not in response_data:
             # Send report to Hawk

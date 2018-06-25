@@ -62,16 +62,14 @@ class StateMenu(Base):
         # TODO process menu
 
         if text in self.response_phrases["ratings"]:
-            # todo get user's ratings
-            pass
+            return await self.controller.goto(payload, "ratings")
 
         elif text in self.response_phrases["EGE_calc"]:
             # Show best programs for user by scores
             return await self.controller.goto(payload, "calc")
 
         elif text in self.response_phrases["notifications"]:
-            # todo set up notifications
-            pass
+            return await self.controller.goto(payload, "settings")
 
         elif text in self.response_phrases["logout"]:
             # Remove student data from database

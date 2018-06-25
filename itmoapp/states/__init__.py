@@ -4,6 +4,8 @@ from .auth import StateAuth
 from .calc import StateCalc
 from .greeting import StateGreeting
 from .menu import StateMenu
+from .ratings import StateRatings
+from .settings import StateSettings
 from .start import StateStart
 
 from config import STATES_COLLECTION_NAME

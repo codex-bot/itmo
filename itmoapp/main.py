@@ -22,6 +22,8 @@ class Itmo:
             'calc': StateCalc,
             'greeting': StateGreeting,
             'menu': StateMenu,
+            'ratings': StateRatings,
+            'settings': StateSettings,
             'start': StateStart
         }
 
