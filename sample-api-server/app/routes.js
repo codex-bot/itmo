@@ -94,27 +94,24 @@ const getUserPositions = (req, res) => {
   let positions = [
     {
       "program": "Прикладная и компьютерная оптика",
+      "id": 10555,
       "position": 13,
       "users": 67,
       "value": 120
     },
     {
       "program": "Световая инженерия",
+      "id": 10555,
       "position": 88,
       "users": 430,
       "value": 25
     },
     {
       "program": "Интеллектуальная робототехника",
+      "id": 10555,
       "position": 17,
       "users": 125,
       "value": 56
-    },
-    {
-      "program": "Лазерные технологии",
-      "position": 5,
-      "users": 27,
-      "value": 25
     }
   ];
 

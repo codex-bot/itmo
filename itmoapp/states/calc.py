@@ -59,21 +59,6 @@ class StateCalc(Base):
             )
 
             chance = int(float(program['value']) / float(program['possible_place']) * 100)
-            # chance = 100 if chance >= 100 else chance
-
-            emoji = {
-                "100": "😎",
-                "90": "😄",
-                "80": "😏",
-                "70": "🙂",
-                "60": "😐",
-                "50": "🙁",
-                "40": "😒",
-                "30": "😞",
-                "20": "😣",
-                "10": "😫",
-                "0": "😵"
-            }
 
             program_message = "<a href=\"{}\">{}</a>\n" \
                               "Проходной балл: {}\n" \
@@ -88,7 +73,7 @@ class StateCalc(Base):
                                   program_value,
                                   program['possible_place'],
                                   chance,
-                                  emoji["100" if chance >= 100 else str((chance // 10) * 10)]
+                                  Utils.satisfaction_emoji(chance)
                               )
 
             programs_data.append(program_message)

@@ -12,7 +12,7 @@ class StateMenu(Base):
 
         self.response_phrases = {
             "ratings": [
-                "Позиции в рейтингах"
+                "Мои позиции в рейтингах"
             ],
 
             "EGE_calc": [
@@ -32,9 +32,9 @@ class StateMenu(Base):
         message = "Что тебя интересует?"
 
         buttons = [
-            # [
-            #     {"text": self.response_phrases["ratings"][0]}
-            # ],
+            [
+                {"text": self.response_phrases["ratings"][0]}
+            ],
             [
                 {"text": self.response_phrases["EGE_calc"][0]}
             ],
@@ -63,8 +63,8 @@ class StateMenu(Base):
             # Show best programs for user by scores
             return await self.controller.goto(payload, "calc")
 
-        # elif text in self.response_phrases["ratings"]:
-        #     return await self.controller.goto(payload, "ratings")
+        elif text in self.response_phrases["ratings"]:
+            return await self.controller.goto(payload, "ratings")
 
         # elif text in self.response_phrases["notifications"]:
         #     return await self.controller.goto(payload, "settings")

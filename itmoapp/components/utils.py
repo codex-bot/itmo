@@ -39,3 +39,27 @@ class Utils:
         :return: string token
         """
         return ''.join(random.SystemRandom().choice(chars) for _ in range(size))
+
+    @staticmethod
+    def satisfaction_emoji(percentage):
+        """
+        Return emoji for satisfaction percentage
+
+        :param percentage:
+        :return:
+        """
+        emoji = {
+            "100": "😎",
+            "90": "😄",
+            "80": "😏",
+            "70": "🙂",
+            "60": "😐",
+            "50": "🙁",
+            "40": "😒",
+            "30": "😞",
+            "20": "😣",
+            "10": "😫",
+            "0": "😵"
+        }
+
+        return emoji["100" if percentage >= 100 else str((percentage // 10) * 10)]
