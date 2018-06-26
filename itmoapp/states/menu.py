@@ -32,15 +32,15 @@ class StateMenu(Base):
         message = "Что тебя интересует?"
 
         buttons = [
-            [
-                {"text": self.response_phrases["ratings"][0]}
-            ],
+            # [
+            #     {"text": self.response_phrases["ratings"][0]}
+            # ],
             [
                 {"text": self.response_phrases["EGE_calc"][0]}
             ],
-            [
-                {"text": self.response_phrases["notifications"][0]}
-            ],
+            # [
+            #     {"text": self.response_phrases["notifications"][0]}
+            # ],
             [
                 {"text": self.response_phrases["logout"][0]}
             ]
@@ -59,17 +59,15 @@ class StateMenu(Base):
 
         text = payload["text"]
 
-        # TODO process menu
-
-        if text in self.response_phrases["ratings"]:
-            return await self.controller.goto(payload, "ratings")
-
-        elif text in self.response_phrases["EGE_calc"]:
+        if text in self.response_phrases["EGE_calc"]:
             # Show best programs for user by scores
             return await self.controller.goto(payload, "calc")
 
-        elif text in self.response_phrases["notifications"]:
-            return await self.controller.goto(payload, "settings")
+        # elif text in self.response_phrases["ratings"]:
+        #     return await self.controller.goto(payload, "ratings")
+
+        # elif text in self.response_phrases["notifications"]:
+        #     return await self.controller.goto(payload, "settings")
 
         elif text in self.response_phrases["logout"]:
             # Remove student data from database
@@ -92,7 +90,8 @@ class StateMenu(Base):
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
-            message
+            message,
+            remove_keyboard=True
         )
 
         return await self.controller.goto(payload, "menu")

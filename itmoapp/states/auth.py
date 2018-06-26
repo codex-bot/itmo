@@ -18,13 +18,18 @@ class StateAuth(Base):
 
         user_id = payload["text"]
 
-        # todo parse user id
+        # Try to parse user response as a number
+        try:
+            user_id = int(user_id)
+        except Exception as e:
+            message = "Номер состоит только из цифры"
 
-        # todo if parsing was failed
-            # todo show error message
-            # todo goto auth
+            await self.sdk.send_text_to_chat(
+                payload["chat"],
+                message
+            )
 
-        # todo api request user
+            return await self.controller.goto(payload, "auth")
 
         response_data = ApiServer().request('getUser', {"id": user_id})
         self.sdk.log("API Server response for getUser: {}".format(response_data))

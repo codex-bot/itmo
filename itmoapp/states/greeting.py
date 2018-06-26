@@ -25,9 +25,9 @@ class StateGreeting(Base):
             [
                 {'text': self.response_phrases['yes'][0]}
             ],
-            [
-                {'text': self.response_phrases['no'][0]}
-            ]
+            # [
+            #     {'text': self.response_phrases['no'][0]}
+            # ]
         ]
 
         keyboard = {

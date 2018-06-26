@@ -7,7 +7,7 @@ class QueryTypePagination(Base):
     def __init__(self, sdk):
         super().__init__(sdk)
 
-        self.limit_per_page = 4
+        self.limit_per_page = 5
 
     @staticmethod
     def name():

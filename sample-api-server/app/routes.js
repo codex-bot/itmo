@@ -13,6 +13,10 @@ const makeResponse = (data, success = true) => {
   };
 };
 
+const random = (min = 1, max = 100) => {
+    return Math.floor((max - min)* Math.random()) + min;
+};
+
 /**
  * Process getUser route
  */
@@ -29,6 +33,12 @@ const getUser = (req, res) => {
   }
 
   /** @todo find user in DB */
+
+  if (userId !== "4621") {
+    let message = "User does not exist";
+
+    res.json(makeResponse({message}, false))
+  }
 
   /**
    * User data to be returned
@@ -188,6 +198,28 @@ const getProgramsByScores = (req, res) => {
         "value": 20
     }
   ];
+
+  programs = [];
+
+  for (let i = 0; i < 64; i++) {
+      let name = Math.random().toString(36).replace(/w+/g, '').substr(0, 25),
+          id = random(10500, 10600),
+          score = random(180, 310),
+          requests = random(10, 400),
+          value = random(),
+          possible_place = random(1, requests);
+
+      programs.push({
+        name,
+        id,
+        score,
+        requests,
+        value,
+        possible_place
+      });
+  }
+
+
 
   /**
    * Return data
