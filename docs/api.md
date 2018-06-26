@@ -1,4 +1,4 @@
-# @itmoabitbot API
+# @itmoabitbot API v1.1
 
 This documentation describes programming interface (basic rules and available methods) for Abit Server.
 
@@ -125,6 +125,7 @@ Array of program's data contains elements with fields:
 
 | Field      | Type   | Description                    |
 |------------|--------|--------------------------------|
+| `id`       | number | Program's ID                   |
 | `program`  | string | Program's name                 |
 | `position` | number | User's position                |
 | `users`    | number | Total number of requests       |
@@ -135,24 +136,28 @@ Array of program's data contains elements with fields:
   "success": true,
   "data": [
     {
+      "id": 10555,
       "program": "Прикладная и компьютерная оптика",
       "position": 13,
       "users": 67,
       "value": 120
     },
     {
+      "id": 10563,
       "program": "Световая инженерия",
       "position": 88,
       "users": 430,
       "value": 25
     },
     {
+      "id": 10559,
       "program": "Интеллектуальная робототехника",
       "position": 17,
       "users": 125,
       "value": 56
     },
     {
+      "id": 10596,
       "program": "Лазерные технологии",
       "position": 5,
       "users": 27,
@@ -167,3 +172,17 @@ Array of program's data contains elements with fields:
 Return list of programs for target scores. Programs should be ordered according to the complexity of entering from the lowest to the highest.
 
 > More info will be added soon.
+
+
+
+## Changelog
+
+### v1.1 (26 Jun 2018)
+
+Added field `id` to each Program in response for method **getUserPositions**.
+
+Added new method **getProgramsByScores**.
+
+### v1.0 (19 Jun 2018)
+
+Initial version

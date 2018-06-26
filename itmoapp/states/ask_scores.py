@@ -25,10 +25,21 @@ class StateAskScores(Base):
 
         # TODO if parse was successful
         if True:
-            # save data to DB (?)
+            # todo save data to DB
+
+            scores = [
+                {
+                    "subject": "Математика",
+                    "score": 9
+                },
+                {
+                    "subject": "Русский язык",
+                    "score": 71
+                }
+            ]
 
             # goto calc with this data
-            return await self.controller.goto(payload, "calc")
+            return await self.controller.goto(payload, "calc", scores)
 
         # Ask resend scores again
         message = "Не могу разобрать"

@@ -14,19 +14,9 @@ class StateCalc(Base):
             remove_keyboard=True
         )
 
-        scores = [
-            {
-                "subject": "Математика",
-                "score": 9
-            },
-            {
-                "subject": "Русский язык",
-                "score": 71
-            }
-        ]
+        self.sdk.log("Scores: {}".format(data))
 
-        # todo send scores array
-        programs = ApiServer().request('getProgramsByScores', {"scores": json.dumps(scores)})
+        programs = ApiServer().request('getProgramsByScores', {"scores": json.dumps(data)})
         self.sdk.log("API Server response for getProgramsByScores: {}".format(programs))
 
         await self.controller.process(payload, programs)

@@ -60,8 +60,12 @@ class StateMenu(Base):
         text = payload["text"]
 
         if text in self.response_phrases["EGE_calc"]:
-            # Show best programs for user by scores
-            return await self.controller.goto(payload, "calc")
+            student = Student(self.sdk, chat=payload['chat'])
+
+            scores = student.scores
+
+            # Show programs for user by scores
+            return await self.controller.goto(payload, "calc", scores)
 
         elif text in self.response_phrases["ratings"]:
             return await self.controller.goto(payload, "ratings")
