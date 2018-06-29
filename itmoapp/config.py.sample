@@ -1,0 +1,37 @@
+##
+# Main URL for services callbacks
+# Should use https protocol
+##
+URL = ''
+
+# Unique application name in lowercase
+APPLICATION_NAME = 'ifmo-app'
+
+# HTTP server settings
+SERVER = {
+    'host': '127.0.0.1',
+    'port': 1330
+}
+
+# RabbitMQ server settings
+RABBITMQ = {
+    'host': '127.0.0.1',
+}
+
+# MongoDB
+DB = {
+    'name': 'cdx-github',
+    'host': '127.0.0.1',
+    'port': 27017
+}
+
+# Token got from App Manager
+APPLICATION_TOKEN = 'ifmo-app'
+
+USERS_COLLECTION_NAME = 'itmo_users'
+STATES_COLLECTION_NAME = 'itmo_states'
+QUERIES_COLLECTION_NAME = 'itmo_queries'
+
+HAWK_TOKEN = ''
+
+API_SERVER_URI = 'http://localhost:3000'
