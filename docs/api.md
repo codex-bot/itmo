@@ -1,4 +1,6 @@
-# @itmoabitbot API v1.1
+# @itmoabitbot API
+
+[Version v1.1](#Changelog)
 
 This documentation describes programming interface (basic rules and available methods) for Abit Server.
 
@@ -105,7 +107,7 @@ Each element in `scores` is an object with the following fields.
 
 ### getUserPositions
 
-Return User's positions in ratings.
+Return User's positions in ratings. Programs are sorted by User's priorities. 
 
 #### Request
 
@@ -169,20 +171,40 @@ Array of program's data contains elements with fields:
 
 ### getProgramsByScores
 
-Return list of programs for target scores. Programs should be ordered according to the complexity of entering from the lowest to the highest.
+Return list of programs for target scores.
+
+<!-- Programs should be ordered according to the complexity of entering from the lowest to the highest. -->
 
 > More info will be added soon.
 
+<!--
 
+#### Request
+
+`GET` request
+
+| Field    | Type   | Description                        |
+|----------|--------|------------------------------------|
+| `scores` | string | JSON-encoded list of score objects |
+
+```
+/getProgramsByScores?scores=%5B%7B%22subject%22%3A+%22%5Cu041c%5Cu0430%5Cu0442%5Cu0435%5Cu043c%5Cu0430%5Cu0442%5Cu0438%5Cu043a%5Cu0430%22%2C+%22score%22%3A+89%7D%2C+%7B%22subject%22%3A+%22%5Cu0420%5Cu0443%5Cu0441%5Cu0441%5Cu043a%5Cu0438%5Cu0439+%5Cu044f%5Cu0437%5Cu044b%5Cu043a%22%2C+%22score%22%3A+93%7D%2C+%7B%22subject%22%3A+%22%5Cu0418%5Cu043d%5Cu0444%5Cu043e%5Cu0440%5Cu043c%5Cu0430%5Cu0442%5Cu0438%5Cu043a%5Cu0430%22%2C+%22score%22%3A+100%7D%2C+%7B%22subject%22%3A+%22%5Cu0424%5Cu0438%5Cu0437%5Cu0438%5Cu043a%5Cu0430%22%2C+%22score%22%3A+67%7D%5D
+```
+
+-->
 
 ## Changelog
 
-### v1.1 (26 Jun 2018)
+### v1.1
 
-Added field `id` to each Program in response for method **getUserPositions**.
+_Revision date: 29 Jun 2018_
 
-Added new method **getProgramsByScores**.
+Added field `id` to each Program in response for [getUserPositions](#getUserPositions) method and define sorting.
 
-### v1.0 (19 Jun 2018)
+<!-- Added new method [getProgramsByScores](#getProgramsByScores). -->
+
+### v1.0 
+
+_Revision date: 19 Jun 2018_
 
 Initial version

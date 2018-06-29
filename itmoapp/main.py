@@ -3,6 +3,7 @@ from config import *
 from commands import *
 from states import *
 from queries import *
+from components import Methods
 import re
 
 
@@ -28,9 +29,6 @@ class Itmo:
         }
 
         self.query_controller = Query(self.sdk)
-        # self.query_controller.types_list = {
-        #     'pagination': QueryTypePagination
-        # }
 
         self.sdk.register_commands([
             ('itmo_start', 'start', CommandStart(self.sdk, self.state_controller)),
@@ -40,6 +38,8 @@ class Itmo:
         self.sdk.set_user_answer_handler(self.process_user_answer)
 
         self.sdk.set_callback_query_handler(self.process_callback_query)
+
+        self.sdk.scheduler.restore(Methods.loggy)
 
         self.sdk.start_server()
 

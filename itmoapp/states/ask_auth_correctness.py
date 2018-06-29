@@ -1,6 +1,6 @@
 from .base import Base
 from models import Student
-
+from components import Methods
 
 class StateAskAuthCorrectness(Base):
 
@@ -63,6 +63,14 @@ class StateAskAuthCorrectness(Base):
                 "name": data["name"],
                 "scores": data["scores"]
             }).save()
+
+            self.sdk.log("SHEDULER WAS ADDED")
+            self.sdk.scheduler.add(
+                Methods.loggy,
+                chat_id=payload["chat"],
+                args=['test'],
+                trigger_params={'second': '*/5'}
+            )
 
             # Go to menu
             return await self.controller.goto(payload, "menu")

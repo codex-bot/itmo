@@ -33,15 +33,15 @@ class StateCalc(Base):
         # Prepare data
         programs_data = []
 
-        # Prepate text for each program
+        # Prepare text for each program
         for program in data:
             # Compose link
             link = "http://abit.ifmo.ru/program/{}/".format(program['id'])
 
-            program_requests = "{} {}".format(
-                program['requests'],
-                Utils.endings(int(program['requests']), "заявление", "заявления", "заявлений")
-            )
+            # program_requests = "{} {}".format(
+            #     program['requests'],
+            #     Utils.endings(int(program['requests']), "заявление", "заявления", "заявлений")
+            # )
 
             program_value = "{} {}".format(
                 program['value'],
@@ -50,21 +50,11 @@ class StateCalc(Base):
 
             chance = int(float(program['value']) / float(program['possible_place']) * 100)
 
-            program_message = "<a href=\"{}\">{}</a>\n" \
-                              "Проходной балл: {}\n" \
-                              "Подано {} на {}\n" \
-                              "Твое заявление было бы {} в рейтинге\n" \
-                              "Вероятность поступления: {}% {}\n" \
-                              "\n".format(
-                                  link,
-                                  program['name'],
-                                  program['score'],
-                                  program_requests,
-                                  program_value,
-                                  program['possible_place'],
-                                  chance,
-                                  Utils.satisfaction_emoji(chance)
-                              )
+            program_message = "<a href=\"{}\">{}</a>\n".format(link, program['name']) + \
+                              "Проходной балл: {}\n".format(program['score']) + \
+                              "Вероятность поступления: {}% {}\n".format(chance, Utils.satisfaction_emoji(chance)) + \
+                              "Твое заявление было бы {} из {} в рейтинге на {}\n".format(program['position'], program['users'], program_value) + \
+                              "\n"
 
             programs_data.append(program_message)
 

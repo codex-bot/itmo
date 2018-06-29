@@ -77,6 +77,9 @@ class StateMenu(Base):
             # Remove student data from database
             Student(self.sdk, chat=payload["chat"]).remove()
 
+            self.sdk.log("SHEDULER WAS REMOVED")
+            self.sdk.scheduler.remove(payload['chat'])
+
             # Send message
             message = "Если понадоблюсь, выполни команду /itmo_start."
 

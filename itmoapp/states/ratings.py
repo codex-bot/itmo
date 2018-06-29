@@ -1,5 +1,5 @@
 from .base import Base
-from components import Utils, ApiServer
+from components import ApiServer, Methods, Utils
 from models import Student
 
 
@@ -14,34 +14,34 @@ class StateRatings(Base):
             remove_keyboard=True
         )
 
-        student = Student(self.sdk, chat=payload['chat'])
-
-        ratings = ApiServer().request('getUserPositions', {'id': student.id})
-        self.sdk.log("API Server response for getUserPositions: {}".format(ratings))
-
-        await self.controller.process(payload, ratings)
+        await self.controller.process(payload, data)
 
     async def process(self, payload, data):
-        message = "Список направлений, куда ты подал документы на постуление.\n" \
-                  "Для возврата в меню нажми /itmo_start."
+        student = Student(self.sdk, chat=payload['chat'])
 
-        await self.sdk.send_text_to_chat(
-            payload["chat"],
-            message
-        )
+        ratings = Methods.check_rating_positions(self.sdk, student.id)
+        self.sdk.log("API Server response for getUserPositions: {}".format(ratings))
+
+        # message = "Список направлений, куда ты подал документы на постуление.\n" \
+        #           "Для возврата в меню нажми /itmo_start."
+        #
+        # await self.sdk.send_text_to_chat(
+        #     payload["chat"],
+        #     message
+        # )
 
         # Prepare data
         programs_data = []
 
-        # Prepate text for each program
-        for program in data:
+        # Prepare text for each program
+        for program in ratings:
             # Compose link
             link = "http://abit.ifmo.ru/program/{}/".format(program['id'])
 
-            program_requests = "{} {}".format(
-                program['users'],
-                Utils.endings(int(program['users']), "заявление", "заявления", "заявлений")
-            )
+            # program_requests = "{} {}".format(
+            #     program['users'],
+            #     Utils.endings(int(program['users']), "заявление", "заявления", "заявлений")
+            # )
 
             program_value = "{} {}".format(
                 program['value'],
@@ -50,19 +50,17 @@ class StateRatings(Base):
 
             chance = int(float(program['value']) / float(program['position']) * 100)
 
-            program_message = "<a href=\"{}\">{}</a>\n" \
-                              "Подано {} на {}\n" \
-                              "Твое заявление {} в рейтинге\n" \
-                              "Вероятность поступления: {}% {}\n" \
-                              "\n".format(
-                                  link,
-                                  program['program'],
-                                  program_requests,
-                                  program_value,
-                                  program['position'],
-                                  chance,
-                                  Utils.satisfaction_emoji(chance)
-                              )
+            if program['position_diff'] > 0:
+                diff = "+{} 👍".format(program['position_diff'])
+            elif program['position_diff'] < 0:
+                diff = "{} 🔻".format(program['position_diff'])
+            else:
+                diff = "0 🔸"
+
+            program_message = "<a href=\"{}\">{}</a>\n".format(link, program['program']) + \
+                              "Вероятность поступления: {}% {}\n".format(chance, Utils.satisfaction_emoji(chance)) + \
+                              "Твое заявление {} ({}) из {} в рейтинге на {}\n".format(program['position'], diff, program['users'], program_value) + \
+                              "\n"
 
             programs_data.append(program_message)
 
