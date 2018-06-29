@@ -1,0 +1,240 @@
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  font-family: SFProDisplay-Semibold;
+}
+
+.header {
+  position: static;
+  padding: 15px 30px;
+  background: #FFFFFF;
+  box-shadow: 0 1px 0 0 #E4E4E4;
+}
+
+.header__logo {
+  margin-bottom: -4px;
+}
+
+.form {
+  max-width: 500px;
+  margin: auto;
+  padding: 25px;
+  font-size: 15px;
+}
+
+.form__title {
+  padding-left: 10px;
+  font-family: SFProDisplay-Regular;
+  margin-bottom: 12px;
+  font-size: 16px;
+  letter-spacing: 0.19px;
+}
+
+.form__title a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid #000;
+}
+
+.form .form__textarea {
+  width: 100%;
+  min-height: 250px;
+  background: #FFFFFF;
+  border: 1px solid #E4E4E4;
+  box-shadow: inset 0 1px 2px 0 rgba(0,0,0,0.07);
+  border-radius: 3px;
+  resize: none;
+  box-sizing: border-box;
+  outline: none;
+  padding: 10px;
+  font-size: 14.2px;
+  line-height: 1.5em;
+}
+
+.form .form__textarea:focus {
+  border-color: #5897EE;
+}
+
+
+.form-confirmation {
+  display: flex;
+  padding: 10px;
+}
+
+.form-confirmation__checkbox {
+  display: flex;
+  margin: auto auto auto 0;
+}
+
+.form-confirmation__checkbox label {
+  cursor: pointer;
+  font-family: SFProDisplay-Regular;
+  font-size: 15px;
+  color: #7F7F7F;
+  letter-spacing: 0.18px;
+  margin: auto;
+}
+
+.form-confirmation__button {
+  display: flex;
+  border: 1px solid #E4E4E4;
+  border-radius: 100px;
+  padding: 9px 15px;
+  outline: none;
+  transition: all 250ms ease-out;
+}
+
+
+.form-confirmation__button svg {
+  margin: auto 1px auto 0;
+  transition: transform 150ms ease;
+  transform: translateX(-1px);
+}
+
+.form-confirmation__button--active svg{
+  transform: translateX(2px) rotate(-25deg) translateY(-2px);
+}
+
+
+.form-confirmation__button span {
+  color: #7F7F7F;
+  letter-spacing: 0.07px;
+  margin: auto auto auto 8px;
+  font-size: 1.2em;
+}
+
+.form-confirmation__button--active {
+  background: #5897EE;
+  box-shadow: 0 8px 4px -7px rgba(34,127,255,0.63);
+  border-color: transparent;
+}
+
+.form-confirmation__button--active span {
+  color: #fff;
+}
+
+.form-confirmation__button--active svg {
+  fill: #fff;
+}
+
+.form-confirmation__button:hover {
+  cursor: pointer;
+}
+
+.custom-checkbox {
+  position: relative;
+  background: #FFFFFF;
+  border: 1px solid #E4E4E4;
+  border-radius: 3px;
+
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  vertical-align: text-bottom;
+  cursor: pointer;
+  margin-right: 9px;
+  transition: all 300ms ease;
+}
+
+.custom-checkbox::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #5897EE;
+  border-radius: 50%;
+  transition: all 100ms ease-out;
+  will-change: width, height;
+  width: 0;
+  height: 0;
+}
+
+.custom-checkbox:hover::after {
+  width: 10px;
+  height: 10px;
+}
+
+.custom-checkbox--active {
+  border-radius: 50%;
+  border-color: transparent;
+}
+
+.custom-checkbox--active::after {
+  background: #5897EE;
+  border-radius: 50%;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.custom-checkbox::before {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  content: '';
+  background: url('./assets/checkbox.svg') 50% no-repeat;
+  z-index: 2;
+
+  transition: all 200ms ease;
+  transform: rotate(-45deg);
+  opacity: 0;
+}
+
+.custom-checkbox--active::before {
+  transform: rotate(0deg);
+  opacity: 1;
+}
+
+.custom-checkbox input {
+  display: none;
+}
+
+@media only screen and (max-width: 400px) {
+  .header,
+  .form {
+    padding: 15px;
+  }
+
+  .form__title {
+    padding-left: 0px;
+  }
+}
+
+/* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
+
+@keyframes wobble {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  15% {
+    transform: translate3d(-5%, 0, 0) rotate3d(0, 0, 1, -5deg);
+  }
+
+  30% {
+    transform: translate3d(2%, 0, 0) rotate3d(0, 0, 1, 3deg);
+  }
+
+  45% {
+    transform: translate3d(-3%, 0, 0) rotate3d(0, 0, 1, -3deg);
+  }
+
+  60% {
+    transform: translate3d(2%, 0, 0) rotate3d(0, 0, 1, 2deg);
+  }
+
+  75% {
+    transform: translate3d(-1%, 0, 0) rotate3d(0, 0, 1, -1deg);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.wobble {
+  animation-name: wobble;
+  animation-duration: 400ms;
+}

@@ -28,6 +28,13 @@ class Itmo:
             'start': StateStart
         }
 
+        self.sdk.set_routes([
+            ('GET', '/', self.show_main_page),
+            ('POST', '/', self.send_to_all_users)
+        ])
+
+        self.sdk.set_path_to_static('/public', './public')
+
         self.query_controller = Query(self.sdk)
 
         self.sdk.register_commands([
@@ -42,6 +49,26 @@ class Itmo:
         self.sdk.scheduler.restore(Methods.loggy)
 
         self.sdk.start_server()
+
+    @CodexBot.http_response
+    async def show_main_page(self, request):
+        with open('./views/index.html') as f:
+            index_page = f.read()
+
+        print(index_page)
+        return {
+            'text': index_page,
+            'content-type': 'text/html',
+            'status': 200
+        }
+
+    @CodexBot.http_response
+    async def send_to_all_users(self, request):
+        ''' Here I need to send a request '''
+        return {
+            'text': '',
+            'status' : 200
+        }
 
     async def process_user_answer(self, payload):
         self.sdk.log("User reply handler fired with payload {}".format(payload))
