@@ -77,7 +77,8 @@ class StateMenu(Base):
             # Remove student data from database
             Student(self.sdk, chat=payload["chat"]).remove()
 
-            self.sdk.log("SHEDULER WAS REMOVED")
+            # Remove checking for User's positions in ratings
+            self.sdk.log("Scheduler for chat {} was removed".format(payload['chat']))
             self.sdk.scheduler.remove(payload['chat'])
 
             # Send message

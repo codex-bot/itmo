@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="/public/style.css">
   <title>Bot</title>
@@ -11,24 +11,29 @@
   <header class="header">
     <img class="header__logo" src="/public/assets/logo.png" width="187" height="24" alt="">
   </header>
-  <div class="form">
+  <div class="form" id="js-form">
     <p class="form__title">Send a message form <a href="https://t.me/itmoabitbot" onclick="event.preventDefault(); deeplinker.click(this)"
    data-app-link="tg://resolve?domain=itmoabitbot">@itmoabitbot</a> to all users</p>
     <form action="/" method="POST">
-      <textarea class="form__textarea" name="text"></textarea>
+      <textarea class="form__textarea" name="text" required></textarea>
       <div class="form-confirmation">
         <div class="form-confirmation__checkbox">
           <span class="custom-checkbox">
             <input type="checkbox" id="confirmation_checkbox" name="confirmation_checkbox">
           </span>
-          <label for="confirmation_checkbox">Confirm sending</label>
+          <label class="userselect" for="confirmation_checkbox">Confirm sending</label>
         </div>
         <button class="form-confirmation__button" type="submit">
           <svg fill="#7F7F7F" width="14" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M13.710007 6.045509L.710318.045085C.503323-.048922.25633.007082.112332.185095c-.144996.178012-.149996.43103-.012.614043L4.37523 6.499541.100333 12.199944c-.137997.183012-.132997.43703.011.614043C.20833 12.934995.353326 13 .500322 13c.070998 0 .141997-.015001.208995-.046003l12.999689-6.000424C13.887003 6.871567 14 6.694555 14 6.49954c0-.195014-.112997-.372027-.289993-.454032z" fill-rule="nonzero"/></svg>
-          <span>Send notification</span>
+          <span class="userselect">Send notification</span>
         </button>
       </div>
     </form>
+  </div>
+  <div class="success dn" id="js-success">
+    <div class="nebula"></div>
+    <div class="success__title">Message was sent</div>
+    <a class="success__resend-button" href="/">Send another one</a>
   </div>
 </body>
 <script type="text/javascript">
@@ -53,12 +58,23 @@
     }
   }, false);
 
-  !function(e,n){"object"==typeof exports&&"object"==typeof module?module.exports=n():"function"==typeof define&&define.amd?define([],n):"object"==typeof exports?exports.deeplinker=n():e.deeplinker=n()}(window,function(){return function(e){var n={};function t(o){if(n[o])return n[o].exports;var r=n[o]={i:o,l:!1,exports:{}};return e[o].call(r.exports,r,r.exports,t),r.l=!0,r.exports}return t.m=e,t.c=n,t.d=function(e,n,o){t.o(e,n)||Object.defineProperty(e,n,{configurable:!1,enumerable:!0,get:o})},t.r=function(e){Object.defineProperty(e,"__esModule",{value:!0})},t.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(n,"a",n),n},t.o=function(e,n){return Object.prototype.hasOwnProperty.call(e,n)},t.p="",t(t.s=0)}([function(e,n,t){"use strict";var o,r,i,u,c,f="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};
-/**
- * Helps to set link with custom protocol (to open apps) and usual link (for webpages) to a button
- *
- * @author Taly Guryn <https://github.com/talyguryn>
- * @license MIT
- */e.exports=(o=function(e){"object"!==(void 0===e?"undefined":f(e))&&c("Passed element is not an object");var n=e.dataset.link||e.href,t=e.dataset.appLink;i(t,n)},r=function(e){e||c("Can not open app, because appLink is undefined");var n=document.createElement("iframe");n.style.display="none",document.body.appendChild(n),null!==n&&(n.src=e)},i=function(e,n){var t=!1;window.addEventListener("pagehide",function(){t=!0},!1),window.addEventListener("blur",function(){t=!0},!1),r(e),setTimeout(function(){t||u(n)},100)},u=function(e){e||c("Can not open page because link is undefined"),window.open(e,"_blank")},c=function(e){throw Error("[Deeplinker] "+e)},{click:o,init:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:".deeplinker",n=document.querySelectorAll(e);n&&n.forEach(function(e){e.addEventListener("click",function(n){n.preventDefault(),o(e)})})},tryToOpenApp:r})}])});
+
+  var url_string = window.location.href;
+  var url = new URL(url_string);
+  var messageWasSend = url.searchParams.get("success");
+
+  if (messageWasSend) {
+    document.getElementById('js-form').classList.add('dn');
+    document.getElementById('js-success').classList.remove('dn');
+  }
+
+
+  /**
+   * Helps to set link with custom protocol (to open apps) and usual link (for webpages) to a button
+   *
+   * @author Taly Guryn <https://github.com/talyguryn>
+   * @license MIT
+   */
+  !function(e,n){"object"==typeof exports&&"object"==typeof module?module.exports=n():"function"==typeof define&&define.amd?define([],n):"object"==typeof exports?exports.deeplinker=n():e.deeplinker=n()}(window,function(){return function(e){var n={};function t(o){if(n[o])return n[o].exports;var r=n[o]={i:o,l:!1,exports:{}};return e[o].call(r.exports,r,r.exports,t),r.l=!0,r.exports}return t.m=e,t.c=n,t.d=function(e,n,o){t.o(e,n)||Object.defineProperty(e,n,{configurable:!1,enumerable:!0,get:o})},t.r=function(e){Object.defineProperty(e,"__esModule",{value:!0})},t.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(n,"a",n),n},t.o=function(e,n){return Object.prototype.hasOwnProperty.call(e,n)},t.p="",t(t.s=0)}([function(e,n,t){"use strict";var o,r,i,u,c,f="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e};e.exports=(o=function(e){"object"!==(void 0===e?"undefined":f(e))&&c("Passed element is not an object");var n=e.dataset.link||e.href,t=e.dataset.appLink;i(t,n)},r=function(e){e||c("Can not open app, because appLink is undefined");var n=document.createElement("iframe");n.style.display="none",document.body.appendChild(n),null!==n&&(n.src=e)},i=function(e,n){var t=!1;window.addEventListener("pagehide",function(){t=!0},!1),window.addEventListener("blur",function(){t=!0},!1),r(e),setTimeout(function(){t||u(n)},100)},u=function(e){e||c("Can not open page because link is undefined"),window.open(e,"_blank")},c=function(e){throw Error("[Deeplinker] "+e)},{click:o,init:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:".deeplinker",n=document.querySelectorAll(e);n&&n.forEach(function(e){e.addEventListener("click",function(n){n.preventDefault(),o(e)})})},tryToOpenApp:r})}])});
 </script>
 </html>

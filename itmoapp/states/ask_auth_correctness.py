@@ -64,12 +64,13 @@ class StateAskAuthCorrectness(Base):
                 "scores": data["scores"]
             }).save()
 
-            self.sdk.log("SHEDULER WAS ADDED")
+            # Add checking for User's positions in ratings
+            self.sdk.log("Scheduler for chat {} was added".format(payload['chat']))
             self.sdk.scheduler.add(
                 Methods.loggy,
                 chat_id=payload["chat"],
-                args=['test'],
-                trigger_params={'second': '*/5'}
+                args=[],    # todo set up args
+                trigger_params={'hour': '21'}
             )
 
             # Go to menu
