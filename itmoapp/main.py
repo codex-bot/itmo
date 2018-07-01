@@ -4,6 +4,7 @@ from commands import *
 from states import *
 from queries import *
 from components import Methods
+from models.student import USERS_COLLECTION_NAME
 import re
 
 
@@ -129,7 +130,25 @@ class Itmo:
         """
         try:
             post = await request.post()
-            # self.sdk.log(post['text'])
+
+            if post["confirmation_checkbox"] is False:
+                return {
+                    'text': 'Not confirmed',
+                    'status': 200
+                }
+
+            if post["text"] == "":
+                return {
+                    'text': 'Can\'t send empty message',
+                    'status': 200
+                }
+
+            all_students = self.sdk.db.find(self, USERS_COLLECTION_NAME, data={})
+            for student in all_students:
+                await self.sdk.send_text_to_chat(
+                    student["chat"],
+                    post["text"]
+                )
 
             return self.sdk.server.redirect('/?success=1')
         except Exception as e:
