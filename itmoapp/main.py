@@ -134,13 +134,13 @@ class Itmo:
             if post["confirmation_checkbox"] is False:
                 return {
                     'text': 'Not confirmed',
-                    'status': 200
+                    'status': 400
                 }
 
             if post["text"] == "":
                 return {
                     'text': 'Can\'t send empty message',
-                    'status': 200
+                    'status': 400
                 }
 
             all_students = self.sdk.db.find(self, USERS_COLLECTION_NAME, data={})
