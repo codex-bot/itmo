@@ -3,7 +3,8 @@ from config import *
 from commands import *
 from states import *
 from queries import *
-from components import Methods
+from components import Methods, Webserver
+# from models.student import USERS_COLLECTION_NAME
 import re
 
 
@@ -11,7 +12,6 @@ class Itmo:
 
     def __init__(self):
         self.sdk = CodexBot(APPLICATION_NAME, SERVER['host'], SERVER['port'], db_config=DB, token=APPLICATION_TOKEN, hawk_token=HAWK_TOKEN)
-
         self.sdk.log("Itmo module initialized")
 
         # Set up states
@@ -28,47 +28,37 @@ class Itmo:
             'start': StateStart
         }
 
-        self.sdk.set_routes([
-            ('GET', '/', self.show_main_page),
-            ('POST', '/', self.send_to_all_users)
-        ])
-
-        self.sdk.set_path_to_static('/public', './public')
-
+        # Set up queries
         self.query_controller = Query(self.sdk)
 
+        # Set up commands
         self.sdk.register_commands([
             ('itmo_start', 'start', CommandStart(self.sdk, self.state_controller)),
             ('itmo_help', 'help', CommandHelp(self.sdk, self.state_controller))
         ])
 
+        # Define text answer handler
         self.sdk.set_user_answer_handler(self.process_user_answer)
 
+        # Define query handler
         self.sdk.set_callback_query_handler(self.process_callback_query)
 
+        # Restore jobs in scheduler
         self.sdk.scheduler.restore(Methods.loggy)
 
+        self.webserver = Webserver(self.sdk)
+
+        # Set up routes for http
+        self.sdk.set_routes([
+            ('GET', '/', self.webserver.http_show_form),
+            ('POST', '/', self.webserver.http_process_form)
+        ])
+
+        # Define static files root
+        self.sdk.set_path_to_static('/public', './webserver/public')
+
+        # Run http server
         self.sdk.start_server()
-
-    @CodexBot.http_response
-    async def show_main_page(self, request):
-        with open('./views/index.html') as f:
-            index_page = f.read()
-
-        print(index_page)
-        return {
-            'text': index_page,
-            'content-type': 'text/html',
-            'status': 200
-        }
-
-    @CodexBot.http_response
-    async def send_to_all_users(self, request):
-        ''' Here I need to send a request '''
-        return {
-            'text': '',
-            'status' : 200
-        }
 
     async def process_user_answer(self, payload):
         self.sdk.log("User reply handler fired with payload {}".format(payload))

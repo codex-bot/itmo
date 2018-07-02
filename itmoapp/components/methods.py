@@ -34,7 +34,7 @@ class Methods:
         return ratings
 
     @staticmethod
-    def loggy(message):
+    def loggy(message='default value'):
         print("Scheduled function with param message: {}".format(message))
 
 
