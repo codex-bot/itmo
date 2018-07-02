@@ -51,7 +51,7 @@ class Webserver:
                 await self.sdk.send_text_to_chat(
                     user["chat"],
                     post["text"],
-                    parse_mode="HTML",
+                    parse_mode="Markdown",
                     disable_web_page_preview=True
                 )
 
