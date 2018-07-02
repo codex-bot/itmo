@@ -1,4 +1,4 @@
-from config import USERS_COLLECTION_NAME
+from config import STUDENTS_COLLECTION_NAME
 
 
 class Student:
@@ -9,7 +9,7 @@ class Student:
         self.id = None
         self.name = None
         self.scores = None
-        self.collection = USERS_COLLECTION_NAME
+        self.collection = STUDENTS_COLLECTION_NAME
 
         if chat is not None:
             self.__get(chat)

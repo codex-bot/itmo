@@ -1,3 +1,6 @@
 [submodule "itmoapp/sdk"]
 	path = itmoapp/sdk
 	url = git@github.com:codex-bot/sdk-python
+[submodule "itmoapp/webserver"]
+	path = itmoapp/webserver
+	url = git@github.com:codex-team/announcer-landing

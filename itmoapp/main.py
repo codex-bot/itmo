@@ -3,8 +3,8 @@ from config import *
 from commands import *
 from states import *
 from queries import *
-from components import Methods
-from models.student import USERS_COLLECTION_NAME
+from components import Methods, Webserver
+# from models.student import USERS_COLLECTION_NAME
 import re
 
 
@@ -46,14 +46,16 @@ class Itmo:
         # Restore jobs in scheduler
         self.sdk.scheduler.restore(Methods.loggy)
 
+        self.webserver = Webserver(self.sdk)
+
         # Set up routes for http
         self.sdk.set_routes([
-            ('GET', '/', self.http_show_form),
-            ('POST', '/', self.http_process_form)
+            ('GET', '/', self.webserver.http_show_form),
+            ('POST', '/', self.webserver.http_process_form)
         ])
 
         # Define static files root
-        self.sdk.set_path_to_static('/public', './public')
+        self.sdk.set_path_to_static('/public', './webserver/public')
 
         # Run http server
         self.sdk.start_server()
@@ -99,66 +101,6 @@ class Itmo:
 
         # Process query
         await self.query_controller.process(payload)
-
-
-
-    @CodexBot.http_response
-    async def http_show_form(self, request):
-        """
-        Return form for announcement
-
-        :param request:
-        :return:
-        """
-        # Read raw html code
-        with open('./views/index.html', 'r') as f:
-            index_page = f.read()
-
-        # Return html to the page
-        return {
-            'text': index_page,
-            'content-type': 'text/html',
-            'status': 200
-        }
-
-    async def http_process_form(self, request):
-        """
-        Process form and redirect to main page
-
-        :param request:
-        :return:
-        """
-        try:
-            post = await request.post()
-
-            if post["confirmation_checkbox"] is False:
-                return {
-                    'text': 'Not confirmed',
-                    'status': 400
-                }
-
-            if post["text"] == "":
-                return {
-                    'text': 'Can\'t send empty message',
-                    'status': 400
-                }
-
-            all_students = self.sdk.db.find(self, USERS_COLLECTION_NAME, data={})
-            for student in all_students:
-                await self.sdk.send_text_to_chat(
-                    student["chat"],
-                    post["text"]
-                )
-
-            return self.sdk.server.redirect('/?success=1')
-        except Exception as e:
-            if self.sdk.hawk:
-                self.sdk.hawk.catch()
-
-            return {
-                'text': 'Bad request',
-                'status': 400
-            }
 
 
 if __name__ == "__main__":
