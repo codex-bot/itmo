@@ -37,7 +37,7 @@ class Methods:
 
     async def loggy(self, payload):
         self.sdk.log("Scheduled function loggy() with payload {}".format(payload))
-        message = "[every minute ping] Are you alive?"
+        message = "[daily report]"
 
         await self.sdk.send_text_to_chat(
             payload["chat"],

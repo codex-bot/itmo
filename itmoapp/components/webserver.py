@@ -64,7 +64,8 @@ class Webserver:
                     user["chat"],
                     post["text"],
                     parse_mode="Markdown",
-                    disable_web_page_preview=True
+                    disable_web_page_preview=True,
+                    bot=user["bot"]
                 )
 
             return aiohttp.web.HTTPFound('/?success=1')

@@ -27,13 +27,19 @@ class CommandStart(CommandBase):
         # Upsert chat to db
         self.sdk.db.update(
             # Collection name
-            Utils.create_collection_name(USERS_COLLECTION_NAME, payload),
+            USERS_COLLECTION_NAME,
 
             # Find params
-            {'chat': payload['chat']},
+            {
+                'chat': payload['chat'],
+                'bot': payload.get('bot')
+            },
 
             # Data to be saved
-            {'chat': payload['chat']},
+            {
+                'chat': payload['chat'],
+                'bot': payload.get('bot')
+            },
 
             # Upsert = true
             True

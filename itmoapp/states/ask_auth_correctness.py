@@ -67,7 +67,7 @@ class StateAskAuthCorrectness(Base):
                 Methods(self.sdk).loggy,
                 payload,
                 args=[payload],
-                trigger_params={'minute': '*'}
+                trigger_params={'hour': '21'}
             )
 
             # Go to menu
