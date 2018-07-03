@@ -7,7 +7,7 @@ from .menu import StateMenu
 from .ratings import StateRatings
 from .settings import StateSettings
 from .start import StateStart
-
+from components import Utils
 from config import STATES_COLLECTION_NAME
 
 
@@ -47,7 +47,8 @@ class State:
             # Call wait user answer
             await self.sdk.broker.api.wait_user_answer(
                 payload['user'],
-                payload['chat']
+                payload['chat'],
+                bot=payload.get('bot', None)
             )
 
     async def process(self, payload, data=None):
@@ -60,10 +61,10 @@ class State:
         """
         # Get current state from DB
         state = self.__get(payload)
-        self.sdk.log("Process state {} for chat {}".format(state['name'], payload['chat']))
+        self.sdk.log("Process state {} for chat {}".format(state['name'] if state else None, payload['chat']))
 
         # If state name is missing the return null
-        if state['name'] is None:
+        if not state or 'name' not in state:
             return
 
         # Find state class in map
@@ -121,7 +122,10 @@ class State:
         :return dict: state from db: _id, chat, name, data, class
         """
         # Get current state from db
-        current_state = self.sdk.db.find_one(self.collection, {'chat': payload['chat']})
+        current_state = self.sdk.db.find_one(
+            Utils.create_collection_name(self.collection, payload),
+            {'chat': payload['chat']}
+        )
 
         # Return None if state is missing
         if not current_state:
@@ -166,7 +170,7 @@ class State:
         # Update state for target chat in db
         self.sdk.db.update(
             # Collection name
-            self.collection,
+            Utils.create_collection_name(self.collection, payload),
 
             # Find params
             {'chat': chat_state['chat']},

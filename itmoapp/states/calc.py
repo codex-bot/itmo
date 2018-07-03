@@ -11,7 +11,8 @@ class StateCalc(Base):
         await self.sdk.send_text_to_chat(
             payload["chat"],
             message,
-            remove_keyboard=True
+            remove_keyboard=True,
+            bot=payload.get('bot', None)
         )
 
         self.sdk.log("Scores: {}".format(data))
@@ -22,12 +23,12 @@ class StateCalc(Base):
         await self.controller.process(payload, programs)
 
     async def process(self, payload, data):
-        message = "Я подобрал несколько направлений, куда у тебя есть возможность поступить.\n" \
-                  "Для возврата в меню нажми /itmo_start."
+        message = "Я подобрал несколько направлений, куда у тебя есть возможность поступить."
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
-            message
+            message,
+            bot=payload.get('bot', None)
         )
 
         # Prepare data
@@ -53,13 +54,21 @@ class StateCalc(Base):
             program_message = "<a href=\"{}\">{}</a>\n".format(link, program['name']) + \
                               "Проходной балл: {}\n".format(program['score']) + \
                               "Вероятность поступления: {}% {}\n".format(chance, Utils.satisfaction_emoji(chance)) + \
-                              "Твое заявление было бы {} из {} в рейтинге на {}\n".format(program['position'], program['users'], program_value) + \
+                              "Твое заявление было бы {} из {} в рейтинге на {}\n".format(program['possible_place'], program['requests'], program_value) + \
                               "\n"
 
             programs_data.append(program_message)
 
         # Send message with buttons
         await self.queries.create(payload, programs_data, 'pagination')
+
+        message = "Для возврата в меню нажми /itmo_start."
+
+        await self.sdk.send_text_to_chat(
+            payload["chat"],
+            message,
+            bot=payload.get('bot', None)
+        )
 
         # Go to start
         await self.controller.goto(payload, "start")

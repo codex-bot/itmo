@@ -52,7 +52,12 @@ class StateMenu(Base):
             "one_time_keyboard": True
         }
 
-        await self.sdk.send_keyboard_to_chat(payload["chat"], message, keyboard)
+        await self.sdk.send_keyboard_to_chat(
+            payload["chat"],
+            message,
+            keyboard,
+            bot=payload.get('bot', None)
+        )
 
     async def process(self, payload, data):
         self.sdk.log("State Menu processor fired with payload {}".format(payload))
@@ -60,7 +65,7 @@ class StateMenu(Base):
         text = payload["text"]
 
         if text in self.response_phrases["EGE_calc"]:
-            student = Student(self.sdk, chat=payload['chat'])
+            student = Student(self.sdk, payload, chat=payload['chat'])
 
             scores = student.scores
 
@@ -75,11 +80,11 @@ class StateMenu(Base):
 
         elif text in self.response_phrases["logout"]:
             # Remove student data from database
-            Student(self.sdk, chat=payload["chat"]).remove()
+            Student(self.sdk, payload, chat=payload["chat"]).remove()
 
             # Remove checking for User's positions in ratings
             self.sdk.log("Scheduler for chat {} was removed".format(payload['chat']))
-            self.sdk.scheduler.remove(payload['chat'])
+            self.sdk.scheduler.remove(payload)
 
             # Send message
             message = "Если понадоблюсь, выполни команду /itmo_start."
@@ -87,7 +92,8 @@ class StateMenu(Base):
             await self.sdk.send_text_to_chat(
                 payload["chat"],
                 message,
-                remove_keyboard=True
+                remove_keyboard=True,
+                bot=payload.get('bot', None)
             )
 
             # Go to start state
@@ -99,7 +105,8 @@ class StateMenu(Base):
         await self.sdk.send_text_to_chat(
             payload["chat"],
             message,
-            remove_keyboard=True
+            remove_keyboard=True,
+            bot=payload.get('bot', None)
         )
 
         return await self.controller.goto(payload, "menu")

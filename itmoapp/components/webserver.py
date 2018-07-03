@@ -9,6 +9,18 @@ class Webserver:
         self.sdk = sdk
         self.public_directory = './webserver/public'
 
+        # Set up routes for http
+        self.sdk.set_routes([
+            ('GET', '/', self.http_show_form),
+            ('POST', '/', self.http_process_form)
+        ])
+
+        # Define static files root
+        self.sdk.set_path_to_static('/public', self.public_directory)
+
+        # Run http server
+        self.sdk.start_server()
+
     @CodexBot.http_response
     async def http_show_form(self, request):
         """
@@ -18,7 +30,7 @@ class Webserver:
         :return:
         """
         # Read raw html code
-        with open('./webserver/index.html', 'r') as f:
+        with open('./webserver/index.html', 'r', encoding="utf-8") as f:
             index_page = f.read()
 
         # Return html to the page
@@ -52,7 +64,8 @@ class Webserver:
                     user["chat"],
                     post["text"],
                     parse_mode="Markdown",
-                    disable_web_page_preview=True
+                    disable_web_page_preview=True,
+                    bot=user["bot"]
                 )
 
             return aiohttp.web.HTTPFound('/?success=1')

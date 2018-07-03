@@ -22,13 +22,6 @@ class StateAskAuthCorrectness(Base):
 
         # User name is missing
         if user_name is None:
-            # message = "Не могу найти твое имя в анкете"
-            #
-            # await self.sdk.send_text_to_chat(
-            #     payload["chat"],
-            #     message
-            # )
-
             # Go back to auth state
             return await self.controller.goto(payload, "auth")
 
@@ -47,17 +40,21 @@ class StateAskAuthCorrectness(Base):
             "one_time_keyboard": True
         }
 
-        await self.sdk.send_keyboard_to_chat(payload["chat"], message, keyboard)
+        await self.sdk.send_keyboard_to_chat(
+            payload["chat"],
+            message,
+            keyboard,
+            bot=payload.get('bot', None)
+        )
 
     async def process(self, payload, data):
         self.sdk.log("State AskAuthCorrectness processor fired with payload {}".format(payload))
-        # TODO remove keyboard
 
         text = payload["text"]
 
         # If user answer "yes, it"s me"
         if text in self.response_phrases["yes"]:
-            student = Student(self.sdk, data={
+            student = Student(self.sdk, payload, data={
                 "chat": payload["chat"],
                 "id": data["id"],
                 "name": data["name"],
@@ -65,11 +62,11 @@ class StateAskAuthCorrectness(Base):
             }).save()
 
             # Add checking for User's positions in ratings
-            self.sdk.log("Scheduler for chat {} was added".format(payload['chat']))
+            self.sdk.log("Scheduler for {}:{} was added".format(payload['bot'], payload['chat']))
             self.sdk.scheduler.add(
-                Methods.loggy,
-                chat_id=payload["chat"],
-                args=[],    # todo set up args
+                Methods(self.sdk).loggy,
+                payload,
+                args=[payload],
                 trigger_params={'hour': '21'}
             )
 
@@ -81,7 +78,8 @@ class StateAskAuthCorrectness(Base):
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
-            message
+            message,
+            bot=payload.get('bot', None)
         )
 
         return await self.controller.goto(payload, "auth")

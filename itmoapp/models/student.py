@@ -1,15 +1,16 @@
+from components import Utils
 from config import STUDENTS_COLLECTION_NAME
 
 
 class Student:
 
-    def __init__(self, sdk, data=None, chat=None):
+    def __init__(self, sdk, payload, data=None, chat=None):
         self.sdk = sdk
         self.chat = None
         self.id = None
         self.name = None
         self.scores = None
-        self.collection = STUDENTS_COLLECTION_NAME
+        self.collection = Utils.create_collection_name(STUDENTS_COLLECTION_NAME, payload)
 
         if chat is not None:
             self.__get(chat)

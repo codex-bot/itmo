@@ -10,5 +10,3 @@ class CommandBase:
         """
         self.sdk = sdk
         self.state = state_controller
-        self.bot = None
-        self.send = partial(self.sdk.send_text_to_chat)

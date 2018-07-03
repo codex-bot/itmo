@@ -10,7 +10,8 @@ class StateAuth(Base):
         await self.sdk.send_text_to_chat(
             payload["chat"],
             message,
-            remove_keyboard=True
+            remove_keyboard=True,
+            bot=payload.get('bot', None)
         )
 
     async def process(self, payload, data):
@@ -26,7 +27,8 @@ class StateAuth(Base):
 
             await self.sdk.send_text_to_chat(
                 payload["chat"],
-                message
+                message,
+                bot=payload.get('bot', None)
             )
 
             return await self.controller.goto(payload, "auth")
@@ -35,17 +37,12 @@ class StateAuth(Base):
         self.sdk.log("API Server response for getUser: {}".format(response_data))
 
         if "name" not in response_data or "scores" not in response_data:
-            # Send report to Hawk
-            try:
-                raise Exception("No \"name\" or \"scores\" param in response data on auth with id:{}".format(user_id))
-            except Exception as e:
-                self.controller.sdk.hawk.catch()
-
             message = "Не могу получить информацию об анкете с этим номером."
 
             await self.sdk.send_text_to_chat(
                 payload["chat"],
-                message
+                message,
+                bot=payload.get('bot', None)
             )
 
             return await self.controller.goto(payload, "auth")

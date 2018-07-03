@@ -1,4 +1,5 @@
 from .base import CommandBase
+from components import Utils
 from config import USERS_COLLECTION_NAME
 
 
@@ -29,10 +30,16 @@ class CommandStart(CommandBase):
             USERS_COLLECTION_NAME,
 
             # Find params
-            {'chat': payload['chat']},
+            {
+                'chat': payload['chat'],
+                'bot': payload.get('bot')
+            },
 
             # Data to be saved
-            {'chat': payload['chat']},
+            {
+                'chat': payload['chat'],
+                'bot': payload.get('bot')
+            },
 
             # Upsert = true
             True

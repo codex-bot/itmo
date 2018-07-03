@@ -12,7 +12,8 @@ class StateSettings(Base):
         await self.sdk.send_text_to_chat(
             payload["chat"],
             message,
-            remove_keyboard=True
+            remove_keyboard=True,
+            bot=payload.get('bot', None)
         )
 
         await self.controller.process(payload, data)
