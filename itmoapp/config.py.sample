@@ -1,15 +1,9 @@
-##
-# Main URL for services callbacks
-# Should use https protocol
-##
-URL = ''
-
 # Unique application name in lowercase
-APPLICATION_NAME = 'ifmo-app'
+APPLICATION_NAME = 'itmoapp'
 
 # HTTP server settings
 SERVER = {
-    'host': '127.0.0.1',
+    'host': '0.0.0.0',
     'port': 1330
 }
 
@@ -20,17 +14,18 @@ RABBITMQ = {
 
 # MongoDB
 DB = {
-    'name': 'cdx-github',
+    'name': 'cdx-itmo',
     'host': '127.0.0.1',
     'port': 27017
 }
 
 # Token got from App Manager
-APPLICATION_TOKEN = 'ifmo-app'
+APPLICATION_TOKEN = 'AAABBBCC'
 
 USERS_COLLECTION_NAME = 'itmo_users'
 STATES_COLLECTION_NAME = 'itmo_states'
 QUERIES_COLLECTION_NAME = 'itmo_queries'
+STUDENTS_COLLECTION_NAME = 'itmo_students'
 
 HAWK_TOKEN = ''
 

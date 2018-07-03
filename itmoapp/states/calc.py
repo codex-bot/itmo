@@ -53,7 +53,7 @@ class StateCalc(Base):
             program_message = "<a href=\"{}\">{}</a>\n".format(link, program['name']) + \
                               "Проходной балл: {}\n".format(program['score']) + \
                               "Вероятность поступления: {}% {}\n".format(chance, Utils.satisfaction_emoji(chance)) + \
-                              "Твое заявление было бы {} из {} в рейтинге на {}\n".format(program['position'], program['users'], program_value) + \
+                              "Твое заявление было бы {} из {} в рейтинге на {}\n".format(program['possible_place'], program['requests'], program_value) + \
                               "\n"
 
             programs_data.append(program_message)

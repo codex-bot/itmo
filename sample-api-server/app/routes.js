@@ -135,6 +135,7 @@ const getProgramsByScores = (req, res) => {
         "name": "Информатика и программирование",
         "id": 10555,
         "score": 309,
+        "possible_place": 24,
         "requests": 391,
         "value": 121
     },
@@ -142,6 +143,7 @@ const getProgramsByScores = (req, res) => {
         "name": "Прикладная и компьютерная оптика",
         "id": 10565,
         "score": 235,
+        "possible_place": 24,
         "requests": 102,
         "value": 26
     },
@@ -149,6 +151,7 @@ const getProgramsByScores = (req, res) => {
         "name": "Лазеры для информационно-коммуникационных систем",
         "id": 10569,
         "score": 239,
+        "possible_place": 24,
         "requests": 90,
         "value": 25
     },
@@ -156,6 +159,7 @@ const getProgramsByScores = (req, res) => {
         "name": "Физика наноструктур",
         "id": 10566,
         "score": 257,
+        "possible_place": 24,
         "requests": 15,
         "value": 13
     },
@@ -163,6 +167,7 @@ const getProgramsByScores = (req, res) => {
         "name": "Вычислительные системы и сети",
         "id": 10556,
         "score": 272,
+        "possible_place": 24,
         "requests": 165,
         "value": 52
     },
@@ -170,6 +175,7 @@ const getProgramsByScores = (req, res) => {
         "name": "Программирование и интернет-технологии",
         "id": 10557,
         "score": 300,
+        "possible_place": 24,
         "requests": 400,
         "value": 90
     },
@@ -177,6 +183,7 @@ const getProgramsByScores = (req, res) => {
         "name": "Системное и прикладное программное обеспечение",
         "id": 10558,
         "score": 283,
+        "possible_place": 24,
         "requests": 89,
         "value": 80
     },
@@ -184,6 +191,7 @@ const getProgramsByScores = (req, res) => {
         "name": "Компьютерные технологии в дизайне",
         "id": 10559,
         "score": 283,
+        "possible_place": 24,
         "requests": 101,
         "value": 14
     },
@@ -191,6 +199,7 @@ const getProgramsByScores = (req, res) => {
         "name": "Нейротехнологии и программирование",
         "id": 10559,
         "score": 282,
+        "possible_place": 24,
         "requests": 100,
         "value": 20
     }
