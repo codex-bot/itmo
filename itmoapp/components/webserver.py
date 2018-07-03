@@ -9,6 +9,18 @@ class Webserver:
         self.sdk = sdk
         self.public_directory = './webserver/public'
 
+        # Set up routes for http
+        self.sdk.set_routes([
+            ('GET', '/', self.http_show_form),
+            ('POST', '/', self.http_process_form)
+        ])
+
+        # Define static files root
+        self.sdk.set_path_to_static('/public', self.public_directory)
+
+        # Run http server
+        self.sdk.start_server()
+
     @CodexBot.http_response
     async def http_show_form(self, request):
         """

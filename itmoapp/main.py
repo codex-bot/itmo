@@ -46,19 +46,8 @@ class Itmo:
         # Restore jobs in scheduler
         self.sdk.scheduler.restore(Methods.loggy)
 
+        # Set up and run webserver
         self.webserver = Webserver(self.sdk)
-
-        # Set up routes for http
-        self.sdk.set_routes([
-            ('GET', '/', self.webserver.http_show_form),
-            ('POST', '/', self.webserver.http_process_form)
-        ])
-
-        # Define static files root
-        self.sdk.set_path_to_static('/public', './webserver/public')
-
-        # Run http server
-        self.sdk.start_server()
 
     async def process_user_answer(self, payload):
         self.sdk.log("User reply handler fired with payload {}".format(payload))
