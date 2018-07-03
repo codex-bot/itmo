@@ -36,7 +36,12 @@ class StateGreeting(Base):
             'one_time_keyboard': True
         }
 
-        await self.sdk.send_keyboard_to_chat(payload['chat'], message, keyboard)
+        await self.sdk.send_keyboard_to_chat(
+            payload['chat'],
+            message,
+            keyboard,
+            bot=payload.get('bot', None)
+        )
 
     async def process(self, payload, data):
         self.sdk.log("State Greeting processor fired with payload {}".format(payload))
@@ -53,7 +58,8 @@ class StateGreeting(Base):
 
             await self.sdk.send_text_to_chat(
                 payload["chat"],
-                message
+                message,
+                bot=payload.get('bot', None)
             )
 
             # Ask scores
@@ -63,7 +69,8 @@ class StateGreeting(Base):
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
-            message
+            message,
+            bot=payload.get('bot', None)
         )
 
         return await self.controller.goto(payload, 'greeting')

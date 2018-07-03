@@ -11,24 +11,25 @@ class StateRatings(Base):
         await self.sdk.send_text_to_chat(
             payload["chat"],
             message,
-            remove_keyboard=True
+            remove_keyboard=True,
+            bot=payload.get('bot', None)
         )
 
         await self.controller.process(payload, data)
 
     async def process(self, payload, data):
-        student = Student(self.sdk, chat=payload['chat'])
+        student = Student(self.sdk, payload, chat=payload['chat'])
 
-        ratings = Methods.check_rating_positions(self.sdk, student.id)
+        ratings = Methods(self.sdk).check_rating_positions(student.id)
         self.sdk.log("API Server response for getUserPositions: {}".format(ratings))
 
-        # message = "Список направлений, куда ты подал документы на постуление.\n" \
-        #           "Для возврата в меню нажми /itmo_start."
-        #
-        # await self.sdk.send_text_to_chat(
-        #     payload["chat"],
-        #     message
-        # )
+        message = "Список направлений, куда ты подал документы на поступление"
+
+        await self.sdk.send_text_to_chat(
+            payload["chat"],
+            message,
+            bot=payload.get('bot', None)
+        )
 
         # Prepare data
         programs_data = []
@@ -66,6 +67,14 @@ class StateRatings(Base):
 
         # Send message with buttons
         await self.queries.create(payload, programs_data, 'pagination')
+
+        message = "Для возврата в меню нажми /itmo_start."
+
+        await self.sdk.send_text_to_chat(
+            payload["chat"],
+            message,
+            bot=payload.get('bot', None)
+        )
 
         # Go to start
         await self.controller.goto(payload, "start")

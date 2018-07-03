@@ -10,7 +10,7 @@ class StateStart(Base):
 
     async def process(self, payload, data):
         # Try to get student data for this chat
-        student = Student(self.sdk, chat=payload['chat'])
+        student = Student(self.sdk, payload, chat=payload['chat'])
 
         # If user is authorized then show menu
         if student.name is not None:
@@ -21,7 +21,8 @@ class StateStart(Base):
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
-            message
+            message,
+            bot=payload.get('bot', None)
         )
 
         return await self.controller.goto(payload, 'greeting')

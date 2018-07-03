@@ -62,4 +62,27 @@ class Utils:
             "0": "😵"
         }
 
-        return emoji["100" if percentage >= 100 else str((percentage // 10) * 10)]
+        if percentage >= 100:
+            index = "100"
+        elif percentage < 0:
+            index = "0"
+        else:
+            index = str((percentage // 10) * 10)
+
+        return emoji[index]
+
+    @staticmethod
+    def create_collection_name(collection, payload):
+        """
+        Add bot hash from payload to collection name if it exists
+
+        :param string collection:
+        :param payload:
+        :return string:
+        """
+        bot_hash = payload.get('bot', '')
+
+        if bot_hash:
+            collection = "{}:{}".format(bot_hash, collection)
+
+        return collection

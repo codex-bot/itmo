@@ -1,4 +1,5 @@
 from .base import CommandBase
+from components import Utils
 from config import USERS_COLLECTION_NAME
 
 
@@ -26,7 +27,7 @@ class CommandStart(CommandBase):
         # Upsert chat to db
         self.sdk.db.update(
             # Collection name
-            USERS_COLLECTION_NAME,
+            Utils.create_collection_name(USERS_COLLECTION_NAME, payload),
 
             # Find params
             {'chat': payload['chat']},

@@ -40,7 +40,8 @@ class QueryTypePagination(Base):
             keyboard,
             parse_mode="HTML",
             disable_web_page_preview=True,
-            want_response=self.message.hash
+            want_response=self.message.hash,
+            bot=payload.get('bot', None)
         )
 
     async def process(self, payload, requested_page):
@@ -65,7 +66,8 @@ class QueryTypePagination(Base):
             keyboard,
             parse_mode="HTML",
             disable_web_page_preview=True,
-            update_id=self.message.id
+            update_id=self.message.id,
+            bot=payload.get('bot', None)
         )
 
     def __wrap_data(self, data):

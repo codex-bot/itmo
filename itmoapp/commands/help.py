@@ -7,14 +7,15 @@ class CommandHelp(CommandBase):
         self.sdk.log("/itmo_help handler fired with payload {}".format(payload))
 
         message = "Этот бот помогает абитуриенту отслеживать состояние поступления " \
-                  "в Университет ИТМО, подбирать направления по результатам ЕГЭ.\n" \
+                  "в Университет ИТМО и подбирать направления по результатам ЕГЭ.\n" \
                   "\n" \
                   "Техподдержка team@ifmo.su"
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
-            message
+            message,
+            bot=payload.get('bot', None)
         )
 
-        # Reenter to current state
+        # Reenter current state
         await self.state.reenter(payload)

@@ -13,7 +13,8 @@ class StateAskScores(Base):
         await self.sdk.send_text_to_chat(
             payload["chat"],
             message,
-            remove_keyboard=True
+            remove_keyboard=True,
+            bot=payload.get('bot', None)
         )
 
     async def process(self, payload, data):
@@ -46,7 +47,8 @@ class StateAskScores(Base):
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
-            message
+            message,
+            bot=payload.get('bot', None)
         )
 
         return await self.controller.goto(payload, "ask_scores")
