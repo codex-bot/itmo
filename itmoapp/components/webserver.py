@@ -18,7 +18,7 @@ class Webserver:
         :return:
         """
         # Read raw html code
-        with open('./webserver/index.html', 'r') as f:
+        with open('./webserver/index.html', 'r', encoding="utf-8") as f:
             index_page = f.read()
 
         # Return html to the page
