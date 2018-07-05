@@ -101,14 +101,14 @@ const getUserPositions = (req, res) => {
     },
     {
       "program": "Световая инженерия",
-      "id": 10555,
+      "id": 10556,
       "position": 88,
       "users": 430,
       "value": 25
     },
     {
       "program": "Интеллектуальная робототехника",
-      "id": 10555,
+      "id": 10557,
       "position": 17,
       "users": 125,
       "value": 56
