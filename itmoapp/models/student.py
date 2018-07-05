@@ -30,7 +30,7 @@ class Student:
             self.collection,
 
             # Find params
-            {'chat_id': self.chat},
+            {'chat': self.chat},
 
             # Data to be saved
             data_to_save,
