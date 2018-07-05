@@ -20,7 +20,7 @@ class StateRatings(Base):
     async def process(self, payload, data):
         student = Student(self.sdk, payload, chat=payload['chat'])
 
-        ratings = Methods(self.sdk).check_rating_positions(student.id)
+        ratings = Methods(self.sdk).check_rating_positions(student.id, payload)
         self.sdk.log("API Server response for getUserPositions: {}".format(ratings))
 
         message = "Список направлений, куда ты подал документы на поступление"

@@ -6,13 +6,25 @@ class Methods:
     def __init__(self, sdk):
         self.sdk = sdk
 
-    def check_rating_positions(self, student_id):
+    def check_rating_positions(self, student_id, payload):
+        """
+        Check ratings positions update for target student
+
+        :param string student_id:
+        :param payload:
+        :return list ratings:
+        """
+        from models import Student
+
+        # Get Student
+        student = Student(self.sdk, payload, chat=payload['chat'])
+
+        # if student.programs:
+
         ratings = ApiServer().request('getUserPositions', {'id': student_id})
 
-        # todo get user positions from db
         old_position = 19
 
-        self.sdk.log("RATINGING: {}".format(ratings))
         for idx, program in enumerate(ratings):
             """
             {
@@ -32,6 +44,11 @@ class Methods:
             self.sdk.log("APROGRAM: {}".format(program))
 
         self.sdk.log("RATINGING: {}".format(ratings))
+
+        # todo update user's saved programs
+
+        student.programs = ratings
+        student.save()
 
         return ratings
 
