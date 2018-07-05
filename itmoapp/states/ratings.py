@@ -18,7 +18,7 @@ class StateRatings(Base):
 
     async def process(self, payload, data):
 
-        message = "Список направлений, куда вы подали документы на поступление"
+        message = "Направления, на которые вы подали документы."
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
