@@ -54,11 +54,10 @@ class StateCalc(Base):
                 )
             )
 
-            chance = int(float(program['value']) / float(program['possible_place']) * 100)
+            chance = min(int(float(program['value']) / float(program['possible_place']) * 100), 100)
 
             program_message = "<a href=\"{}\">{}</a>\n".format(link, program['name']) + \
                               "Проходной балл: {}\n".format(program['score']) + \
-                              "Вероятность поступления: {}% {}\n".format(chance, Utils.satisfaction_emoji(chance)) + \
                               "Ваше заявление было бы {} из {}\n".format(
                                   program['possible_place'],
                                   program['requests']
@@ -66,6 +65,7 @@ class StateCalc(Base):
                               "{}\n".format(
                                   program_value
                               ) + \
+                              "Вероятность поступления: {}% {}\n".format(chance, Utils.satisfaction_emoji(chance)) + \
                               "\n"
 
             programs_data.append(program_message)

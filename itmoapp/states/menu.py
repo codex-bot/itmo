@@ -87,7 +87,7 @@ class StateMenu(Base):
             self.sdk.scheduler.remove(payload)
 
             # Send message
-            message = "Если понадоблюсь, нажмите /itmo_start"
+            message = "Если понадоблюсь, выполните /itmo_start"
 
             await self.sdk.send_text_to_chat(
                 payload["chat"],

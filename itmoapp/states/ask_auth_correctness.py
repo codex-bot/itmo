@@ -64,10 +64,11 @@ class StateAskAuthCorrectness(Base):
             # Add checking for User's positions in ratings
             self.sdk.log("Scheduler for {}:{} was added".format(payload['bot'], payload['chat']))
             self.sdk.scheduler.add(
-                Methods(self.sdk).loggy,
+                Methods(self.sdk).evening_digest,
                 payload,
                 args=[payload],
                 trigger_params={'hour': '21'}
+                # trigger_params={'minute': '*/1'}
             )
 
             # Go to menu
