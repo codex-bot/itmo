@@ -4,7 +4,7 @@ from .base import Base
 class StateAskScores(Base):
 
     async def before(self, payload, data):
-        message = "Пришли мне список своих баллов в формате:\n" \
+        message = "Пришлите мне список своих баллов в формате:\n" \
                   "\n" \
                   "Математика 80\n" \
                   "Русский язык 78\n" \

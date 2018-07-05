@@ -19,7 +19,7 @@ class StateGreeting(Base):
         }
 
     async def before(self, payload, data):
-        message = "Ты уже подал заявление?"
+        message = "Вы уже подали заявление?"
 
         buttons = [
             [
@@ -45,7 +45,6 @@ class StateGreeting(Base):
 
     async def process(self, payload, data):
         self.sdk.log("State Greeting processor fired with payload {}".format(payload))
-        # TODO remove keyboard
 
         text = payload['text']
 
@@ -53,17 +52,17 @@ class StateGreeting(Base):
             # Go to auth
             return await self.controller.goto(payload, 'auth')
 
-        elif text in self.response_phrases['no']:
-            message = 'Я могу помочь подобрать направления по твоим результатам ЕГЭ.'
-
-            await self.sdk.send_text_to_chat(
-                payload["chat"],
-                message,
-                bot=payload.get('bot', None)
-            )
-
-            # Ask scores
-            return await self.controller.goto(payload, 'ask_scores')
+        # elif text in self.response_phrases['no']:
+        #     message = 'Я могу помочь подобрать направления по вашим результатам ЕГЭ.'
+        #
+        #     await self.sdk.send_text_to_chat(
+        #         payload["chat"],
+        #         message,
+        #         bot=payload.get('bot', None)
+        #     )
+        #
+        #     # Ask scores
+        #     return await self.controller.goto(payload, 'ask_scores')
 
         message = 'Не понимаю'
 

@@ -5,7 +5,7 @@ from components import Methods, Utils
 class StateRatings(Base):
 
     async def before(self, payload, data):
-        message = "Минутку."
+        message = "Минутку"
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
@@ -18,7 +18,7 @@ class StateRatings(Base):
 
     async def process(self, payload, data):
 
-        message = "Список направлений, куда ты подал документы на поступление"
+        message = "Список направлений, куда вы подали документы на поступление"
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
@@ -39,7 +39,12 @@ class StateRatings(Base):
 
             program_value = "{} {}".format(
                 program['value'],
-                Utils.endings(int(program['value']), "место", "места", "мест")
+                Utils.endings(
+                    int(program['value']),
+                    "бюджетное место",
+                    "бюджетных места",
+                    "бюджетных мест"
+                )
             )
 
             chance = int(float(program['value']) / float(program['position']) * 100)
@@ -47,13 +52,18 @@ class StateRatings(Base):
             if program['position_diff'] > 0:
                 diff = "+{} 👍".format(program['position_diff'])
             elif program['position_diff'] < 0:
-                diff = "{} 👎".format(program['position_diff'])
+                diff = "{} 🔻".format(program['position_diff'])
             else:
-                diff = "+0"
+                diff = None
 
             program_message = "<a href=\"{}\">{}</a>\n".format(link, program['program']) + \
                               "Вероятность поступления: {}% {}\n".format(chance, Utils.satisfaction_emoji(chance)) + \
-                              "Твое заявление {} ({}) из {} в рейтинге на {}\n".format(program['position'], diff, program['users'], program_value) + \
+                              "Ваше заявление {}{} из {}.\n".format(
+                                  program['position'],
+                                  " ({})".format(diff) if diff else "",
+                                  program['users']
+                              ) + \
+                              "{}\n".format(program_value) + \
                               "\n"
 
             programs_data.append(program_message)
@@ -61,7 +71,7 @@ class StateRatings(Base):
         # Send message with buttons
         await self.queries.create(payload, programs_data, 'pagination')
 
-        message = "Для возврата в меню нажми /itmo_start."
+        message = "Нажмите /itmo_start для возврата в меню"
 
         await self.sdk.send_text_to_chat(
             payload["chat"],

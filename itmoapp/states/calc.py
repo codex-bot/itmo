@@ -6,7 +6,7 @@ import json
 class StateCalc(Base):
 
     async def before(self, payload, data):
-        message = "Минутку."
+        message = "Минутку"
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
@@ -23,7 +23,7 @@ class StateCalc(Base):
         await self.controller.process(payload, programs)
 
     async def process(self, payload, data):
-        message = "Я подобрал несколько направлений, куда у тебя есть возможность поступить."
+        message = "Я подобрал несколько направлений, куда у вас есть возможность поступить."
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
@@ -46,7 +46,12 @@ class StateCalc(Base):
 
             program_value = "{} {}".format(
                 program['value'],
-                Utils.endings(int(program['value']), "место", "места", "мест")
+                Utils.endings(
+                    int(program['value']),
+                    "бюджетное место",
+                    "бюджетных места",
+                    "бюджетных мест"
+                )
             )
 
             chance = int(float(program['value']) / float(program['possible_place']) * 100)
@@ -54,7 +59,13 @@ class StateCalc(Base):
             program_message = "<a href=\"{}\">{}</a>\n".format(link, program['name']) + \
                               "Проходной балл: {}\n".format(program['score']) + \
                               "Вероятность поступления: {}% {}\n".format(chance, Utils.satisfaction_emoji(chance)) + \
-                              "Твое заявление было бы {} из {} в рейтинге на {}\n".format(program['possible_place'], program['requests'], program_value) + \
+                              "Ваше заявление было бы {} из {}\n".format(
+                                  program['possible_place'],
+                                  program['requests']
+                              ) + \
+                              "{}\n".format(
+                                  program_value
+                              ) + \
                               "\n"
 
             programs_data.append(program_message)
@@ -62,7 +73,7 @@ class StateCalc(Base):
         # Send message with buttons
         await self.queries.create(payload, programs_data, 'pagination')
 
-        message = "Для возврата в меню нажми /itmo_start."
+        message = "Нажмите /itmo_start для возврата в меню"
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
