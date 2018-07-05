@@ -6,7 +6,7 @@ class Methods:
     def __init__(self, sdk):
         self.sdk = sdk
 
-    def check_rating_positions(self, student_id, payload):
+    def check_rating_positions(self, payload):
         """
         Check ratings positions update for target student
 
@@ -16,16 +16,16 @@ class Methods:
         """
         from models import Student
 
-        # Get Student
+        # Get Student's data from db
         student = Student(self.sdk, payload, chat=payload['chat'])
 
-        # if student.programs:
+        # Send request to api server
+        ratings = ApiServer().request('getUserPositions', {'id': student.id})
 
-        ratings = ApiServer().request('getUserPositions', {'id': student_id})
+        # Prepare new ratings dictionary
+        new_ratings = {}
 
-        old_position = 19
-
-        for idx, program in enumerate(ratings):
+        for program in ratings:
             """
             {
                 'program': 'Прикладная и компьютерная оптика',
@@ -35,22 +35,24 @@ class Methods:
                 'value': 120
             }
             """
+            program_id = program['id']
 
-            # todo compare positions with saved in db
-            program['position_diff'] = old_position - program['position']
+            program['position_diff'] = 0
 
-            ratings[idx] = program
+            try:
+                # Get user's last position
+                last_position = student.programs[str(program_id)]['position']
 
-            self.sdk.log("APROGRAM: {}".format(program))
+                program['position_diff'] = last_position - program['position']
+            except Exception as e:
+                pass
 
-        self.sdk.log("RATINGING: {}".format(ratings))
+            new_ratings[str(program_id)] = program
 
-        # todo update user's saved programs
-
-        student.programs = ratings
+        student.programs = new_ratings
         student.save()
 
-        return ratings
+        return new_ratings
 
     async def loggy(self, payload):
         self.sdk.log("Scheduled function loggy() with payload {}".format(payload))

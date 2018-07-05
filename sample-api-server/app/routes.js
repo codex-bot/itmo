@@ -95,21 +95,21 @@ const getUserPositions = (req, res) => {
     {
       "program": "Прикладная и компьютерная оптика",
       "id": 10555,
-      "position": 13,
+      "position": random(67),
       "users": 67,
       "value": 120
     },
     {
       "program": "Световая инженерия",
       "id": 10556,
-      "position": 88,
+      "position": random(430),
       "users": 430,
       "value": 25
     },
     {
       "program": "Интеллектуальная робототехника",
       "id": 10557,
-      "position": 17,
+      "position": random(125),
       "users": 125,
       "value": 56
     }
