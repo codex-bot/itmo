@@ -17,7 +17,7 @@ class StateStart(Base):
             return await self.controller.goto(payload, 'menu')
 
         # User is not authorized
-        message = "Привет. Я буду держать тебя в курсе твоего состояния поступления в ИТМО."
+        message = "Привет. Я буду держать в курсе твоего состояния поступления в ИТМО."
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
