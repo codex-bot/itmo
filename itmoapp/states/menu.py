@@ -12,7 +12,7 @@ class StateMenu(Base):
 
         self.response_phrases = {
             "ratings": [
-                "Мои вступительные испытания"
+                "Мои вступительные заявления"
             ],
 
             "EGE_calc": [
