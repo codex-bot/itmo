@@ -18,10 +18,10 @@ class Utils:
         n = count % 100
         n1 = count % 10
 
-        if n > 10 and n < 20:
+        if 10 < n < 20:
             return form5
 
-        if n1 > 1 and n1 < 5:
+        if 1 < n1 < 5:
             return form2
 
         if n1 == 1:
