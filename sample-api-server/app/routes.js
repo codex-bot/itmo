@@ -95,21 +95,21 @@ const getUserPositions = (req, res) => {
     {
       "program": "Прикладная и компьютерная оптика",
       "id": 10555,
-      "position": 13,
+      "position": random(1, 67),
       "users": 67,
       "value": 120
     },
     {
       "program": "Световая инженерия",
-      "id": 10555,
-      "position": 88,
+      "id": 10556,
+      "position": random(1, 430),
       "users": 430,
       "value": 25
     },
     {
       "program": "Интеллектуальная робототехника",
-      "id": 10555,
-      "position": 17,
+      "id": 10557,
+      "position": random(1, 125),
       "users": 125,
       "value": 56
     }
@@ -208,7 +208,8 @@ const getProgramsByScores = (req, res) => {
   programs = [];
 
   for (let i = 0; i < 64; i++) {
-      let name = Math.random().toString(36).replace(/w+/g, '').substr(0, 25),
+      // let name = Math.random().toString(36).replace(/w+/g, '').substr(0, 25),
+      let name = "Название направления №" + i + "",
           id = random(10500, 10600),
           score = random(180, 310),
           requests = random(10, 400),

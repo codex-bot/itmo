@@ -5,7 +5,7 @@ from .base import Base
 class StateAuth(Base):
 
     async def before(self, payload, data):
-        message = "Введи номер заявления"
+        message = "Введите номер заявления"
 
         await self.sdk.send_text_to_chat(
             payload["chat"],
@@ -23,7 +23,7 @@ class StateAuth(Base):
         try:
             user_id = int(user_id)
         except Exception as e:
-            message = "Номер состоит только из цифры"
+            message = "Номер должен состоять только из цифр"
 
             await self.sdk.send_text_to_chat(
                 payload["chat"],

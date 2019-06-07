@@ -25,7 +25,7 @@ class StateAskAuthCorrectness(Base):
             # Go back to auth state
             return await self.controller.goto(payload, "auth")
 
-        message = "Тебя зовут {}?".format(user_name)
+        message = "Вас зовут {}?".format(user_name)
 
         buttons = [
             [
@@ -64,17 +64,18 @@ class StateAskAuthCorrectness(Base):
             # Add checking for User's positions in ratings
             self.sdk.log("Scheduler for {}:{} was added".format(payload['bot'], payload['chat']))
             self.sdk.scheduler.add(
-                Methods(self.sdk).loggy,
+                Methods(self.sdk).evening_digest,
                 payload,
                 args=[payload],
                 trigger_params={'hour': '21'}
+                # trigger_params={'minute': '*/1'}
             )
 
             # Go to menu
             return await self.controller.goto(payload, "menu")
 
         # If user answer "no"
-        message = "Попробуй авторизоваться еще раз."
+        message = "Попробуйте авторизоваться еще раз."
 
         await self.sdk.send_text_to_chat(
             payload["chat"],

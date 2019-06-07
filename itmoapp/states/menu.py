@@ -12,7 +12,7 @@ class StateMenu(Base):
 
         self.response_phrases = {
             "ratings": [
-                "Мои позиции в рейтингах"
+                "Мои вступительные заявления"
             ],
 
             "EGE_calc": [
@@ -29,7 +29,7 @@ class StateMenu(Base):
         }
 
     async def before(self, payload, data):
-        message = "Что тебя интересует?"
+        message = "Что вас интересует?"
 
         buttons = [
             [
@@ -87,7 +87,7 @@ class StateMenu(Base):
             self.sdk.scheduler.remove(payload)
 
             # Send message
-            message = "Если понадоблюсь, выполни команду /itmo_start."
+            message = "Если понадоблюсь, выполните /itmo_start"
 
             await self.sdk.send_text_to_chat(
                 payload["chat"],

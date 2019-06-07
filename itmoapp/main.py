@@ -44,7 +44,7 @@ class Itmo:
         self.sdk.set_callback_query_handler(self.process_callback_query)
 
         # Restore jobs in scheduler
-        self.sdk.scheduler.restore(Methods(self.sdk).loggy)
+        self.sdk.scheduler.restore(Methods(self.sdk).evening_digest)
 
         # Set up and run webserver
         self.webserver = Webserver(self.sdk)

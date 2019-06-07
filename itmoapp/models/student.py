@@ -10,6 +10,7 @@ class Student:
         self.id = None
         self.name = None
         self.scores = None
+        self.programs = None
         self.collection = Utils.create_collection_name(STUDENTS_COLLECTION_NAME, payload)
 
         if chat is not None:
@@ -22,7 +23,8 @@ class Student:
             'chat': self.chat,
             'id': self.id,
             'name': self.name,
-            'scores': self.scores
+            'scores': self.scores,
+            'programs': self.programs
         }
 
         self.sdk.db.update(
@@ -30,7 +32,7 @@ class Student:
             self.collection,
 
             # Find params
-            {'chat_id': self.chat},
+            {'chat': self.chat},
 
             # Data to be saved
             data_to_save,
@@ -52,7 +54,7 @@ class Student:
         """
         Get user data from db
 
-        :param string chat:
+        :param string chat: chat_hash from payload
         :return:
         """
         result = self.sdk.db.find_one(self.collection, {'chat': chat})
@@ -67,6 +69,4 @@ class Student:
         self.id = data.get('id')
         self.name = data.get('name')
         self.scores = data.get('scores')
-
-    # def get_positions(self):
-    #     pass
+        self.programs = data.get('programs')
